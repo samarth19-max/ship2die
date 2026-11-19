@@ -1,0 +1,14 @@
+# internal ops — strategy + personal checklist, not for the public repo
+README-OPS.md
+distribution/
+
+# build/deploy artifacts
+.zcode-site/
+.zcode-site.json
+
+# local noise
+*.log
+.DS_Store
+Thumbs.db
+node_modules/
+__pycache__/

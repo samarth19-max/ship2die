@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BF Rocket — Enter your offer once. Publish it right.</title>
+<meta name="description" content="Enter your offer once — the deal page, share banner and launch posts stay consistent, and a pre-flight review catches mistakes before you publish. Free tier exports the standalone page.">
+<meta property="og:title" content="🔥 BF Rocket — One offer in. A consistent, reviewed campaign out.">
+<meta property="og:description" content="No code. Enter your offer once and download one pack: deal page, share banner, launch posts — reviewed before you publish.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bfrocket-qmc2.zai-ai.site/">
+<meta property="og:image" content="https://bfrocket-qmc2.zai-ai.site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🔥 BF Rocket — One offer in. A consistent, reviewed campaign out.">
+<meta name="twitter:description" content="No code. Enter your offer once and download one pack: deal page, share banner, launch posts — reviewed before you publish.">
+<meta name="twitter:image" content="https://bfrocket-qmc2.zai-ai.site/assets/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🚀</text></svg>">
+
+<!-- ============================================================
+     HACKATHON TRAFFIC TRACKER — paste the official snippet here
+     (must be installed BEFORE the first visitor, per contest rules)
+     ============================================================ -->
+<!-- <script src="TRACKER_SNIPPET"></script> -->
+
+<style>
+  :root{
+    --bg:#0a0a0f; --panel:#141420; --panel2:#1a1e2b; --line:#262a38;
+    --text:#f2f3f7; --muted:#9aa1b4; --accent:#ff3b30; --accent2:#ff9500;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:40;background:rgba(10,10,15,.85);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .navin{display:flex;align-items:center;gap:22px;height:60px}
+  .logo{font-weight:900;font-size:17px;letter-spacing:-.3px;display:flex;align-items:center;gap:8px;text-decoration:none}
+  .navin .sp{flex:1}
+  .navlink{color:var(--muted);text-decoration:none;font-size:14px;font-weight:600}
+  .navlink:hover{color:var(--text)}
+  .btn{display:inline-block;border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:10px 18px;border-radius:11px;cursor:pointer;font-weight:700;font-size:14px;text-decoration:none;transition:all .15s}
+  .btn:hover{border-color:#3d4356;background:#222839}
+  .btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;box-shadow:0 6px 24px rgba(255,59,48,.25)}
+  .btn.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .btn.big{padding:15px 30px;font-size:16px;border-radius:14px}
+
+  /* hero */
+  .hero{padding:84px 0 40px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:-200px -200px auto -200px;height:600px;background:radial-gradient(600px 300px at 50% 0%,rgba(255,59,48,.16),transparent 70%);pointer-events:none}
+  .rib{display:inline-flex;align-items:center;gap:8px;background:rgba(255,59,48,.12);border:1px solid rgba(255,59,48,.35);color:#ff8a80;font-size:12.5px;font-weight:800;letter-spacing:1.2px;padding:7px 16px;border-radius:99px}
+  .rib .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 1.3s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  h1{font-size:clamp(38px,7vw,72px);font-weight:900;letter-spacing:-2px;line-height:1.03;margin:24px auto 18px;max-width:900px}
+  h1 .grad{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{font-size:19px;color:var(--muted);max-width:640px;margin:0 auto;line-height:1.55}
+  .sub b{color:var(--text)}
+  .heroc{display:flex;gap:12px;justify-content:center;margin:34px 0 10px;flex-wrap:wrap}
+  .micro{font-size:12.5px;color:#6f7688}
+  .bfdays{margin-top:26px;font-size:13px;color:var(--muted)}
+  .bfdays b{color:var(--accent2);font-variant-numeric:tabular-nums}
+
+  /* demo */
+  .demo{margin:56px auto 0;max-width:1000px}
+  .demo .framehead{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--panel);border:1px solid var(--line);border-bottom:none;border-radius:14px 14px 0 0}
+  .demo .dot{width:11px;height:11px;border-radius:50%}
+  .demo .fakeurl{flex:1;margin-left:8px;background:#0a0a0f;border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:12px;padding:5px 12px;font-family:ui-monospace,monospace}
+  .demo .framebody{border:1px solid var(--line);border-radius:0 0 14px 14px;overflow:hidden;height:640px;background:#fff}
+  .demo iframe{width:100%;height:640px;border:none}
+  .demo .zoomhint{text-align:center;color:#6f7688;font-size:12.5px;margin-top:12px}
+
+  /* sections */
+  section{padding:76px 0}
+  .kicker{font-size:12px;font-weight:800;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:14px}
+  h2{font-size:clamp(28px,4.5vw,44px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:16px}
+  .lead{color:var(--muted);font-size:17px;max-width:620px}
+  .center{text-align:center}
+  .center .lead{margin:0 auto}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;transition:transform .15s,border-color .15s}
+  .card:hover{transform:translateY(-3px);border-color:#3a4055}
+  .card .ic{font-size:26px;margin-bottom:12px}
+  .card h3{font-size:16px;margin-bottom:7px}
+  .card p{font-size:13.5px;color:var(--muted);line-height:1.55}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:44px;counter-reset:st}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px;position:relative}
+  .step .n{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;margin-bottom:14px}
+  .step h3{font-size:16.5px;margin-bottom:8px}
+  .step p{font-size:13.5px;color:var(--muted)}
+  .step p b{color:var(--text)}
+
+  /* pricing */
+  .pricecard{max-width:520px;margin:44px auto 0;background:var(--panel);border:1px solid rgba(255,149,0,.4);border-radius:20px;padding:34px;text-align:center;position:relative}
+  .pricecard .tag99{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:11.5px;font-weight:900;letter-spacing:1px;padding:6px 16px;border-radius:99px}
+  .priceline{display:flex;align-items:baseline;justify-content:center;gap:12px;margin:10px 0 4px}
+  .priceline .old{font-size:24px;color:var(--muted);text-decoration:line-through}
+  .priceline .new{font-size:62px;font-weight:900;letter-spacing:-2px}
+  .plist{list-style:none;text-align:left;margin:22px 0;max-width:340px;margin-left:auto;margin-right:auto}
+  .plist li{padding:8px 0;font-size:14.5px;color:var(--text);display:flex;gap:10px}
+  .plist li::before{content:"✓";color:var(--accent2);font-weight:900}
+  .plist li.free{color:var(--muted)}
+  .plist li.free::before{content:"—";color:#565d70}
+  .fine{font-size:12px;color:#6f7688;margin-top:14px}
+
+  /* faq */
+  .faq{max-width:680px;margin:40px auto 0}
+  .qa{border-bottom:1px solid var(--line);padding:18px 4px}
+  .qa h3{font-size:15.5px;margin-bottom:7px}
+  .qa p{font-size:14px;color:var(--muted)}
+
+  /* final */
+  .final{text-align:center;padding:90px 0 100px;background:radial-gradient(700px 340px at 50% 100%,rgba(255,59,48,.14),transparent 70%)}
+  .final h2{max-width:760px;margin:0 auto 14px}
+  .count{display:flex;gap:10px;justify-content:center;margin:30px 0 34px}
+  .cd{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 0;min-width:86px}
+  .cd b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums}
+  .cd span{font-size:10.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted)}
+  footer{border-top:1px solid var(--line);padding:28px;text-align:center;color:#6f7688;font-size:12.5px}
+  footer a{color:var(--muted)}
+
+  @media(max-width:860px){
+    .grid{grid-template-columns:1fr 1fr}
+    .steps{grid-template-columns:1fr}
+    .demo .framebody,.demo iframe{height:520px}
+    .hero{padding-top:60px}
+  }
+  @media(max-width:560px){
+    .grid{grid-template-columns:1fr}
+    .cd{min-width:64px;padding:10px 0}.cd b{font-size:24px}
+    .navlink{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important; transition:none!important;}
+    html{scroll-behavior:auto}
+  }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap navin">
+    <a class="logo" href="/">🚀 <span>BF Rocket</span></a>
+    <div class="sp"></div>
+    <a class="navlink" href="#demo">Live demo</a>
+    <a class="navlink" href="#features">Features</a>
+    <a class="navlink" href="#pricing">Pricing</a>
+    <a class="navlink" href="#faq">FAQ</a>
+    <a class="btn primary" href="/app/">Build your page — free</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="rib"><span class="dot"></span> <span id="ribTxt">BLACK FRIDAY 2026 · ONE OFFER IN, ONE PUBLISH PACK OUT</span></span>
+    <h1>Enter your offer once.<br><span class="grad">Publish it without the mistakes.</span></h1>
+    <p class="sub">Enter your offer once and every piece stays consistent: the page's buy button opens <b>your checkout link</b>, the launch posts point to <b>your page URL</b>, and the deadline ends at the same instant in every visitor's timezone.
+      Before you publish, a pre-flight review runs the tool checks — and the short list only you can do, like <b>opening your checkout to confirm it charges the price you entered</b>.
+      Then take one download with everything you need to publish.</p>
+    <div class="heroc">
+      <a class="btn primary big" href="/app/" onclick="_trk('build_cta_click')">Build my deal page — free</a>
+      <a class="btn big" href="/examples/snapshot.html" target="_blank" rel="noopener" onclick="_trk('example_click')">See a finished deal page</a>
+    </div>
+    <div class="micro">No signup · no code · free tier exports the HTML page (small badge, 1 of 4 themes) — PRO removes both and adds the campaign pack</div>
+    <div class="bfdays">Black Friday is <b id="bfcount">—</b> — enough time to enter your offer once and publish it right.</div>
+
+    <div class="demo" id="demo">
+      <div class="framehead">
+        <span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span>
+        <span class="fakeurl">bfrocket — live demo, go ahead and type in it</span>
+      </div>
+      <div class="framebody">
+        <iframe data-src="/app/index.html?demo=1" title="BF Rocket live demo" loading="lazy"></iframe>
+      </div>
+      <div class="zoomhint">☝ That's the actual product, running live in this page. Enter your offer once — every piece updates from the same details.</div>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <div class="kicker">What you get</div>
+    <h2>One offer, entered once.<br>Every piece consistent — reviewed before you publish.</h2>
+    <p class="lead">BF Rocket isn't a bloated page builder. It does one job: take your offer in once and hand you a consistent deal page, share banner and launch posts — with the mistakes caught before anything goes public.</p>
+    <div class="grid">
+      <div class="card"><div class="ic">⏳</div><h3>Countdown that ends when you mean it</h3><p>Set the end once, with an explicit UTC offset. Every visitor sees the same remaining time and the same end instant — no "expired an hour early in my timezone" surprises. At zero, the page swaps the buy button for a deal-ended state.</p></div>
+      <div class="card"><div class="ic">💥</div><h3>Strikethrough pricing + % badge</h3><p>Old price crossed out, new price huge, discount badge loud. Quick chips calculate -30% to -80% for you.</p></div>
+      <div class="card"><div class="ic">🎨</div><h3>4 pro themes</h3><p>Midnight, Ember, Snow and Neon — tuned color systems, mobile-perfect. Not "templates": real themes with your accent color.</p></div>
+      <div class="card"><div class="ic">🖼</div><h3>OG banner generator</h3><p>A 1200×630 share image generated from the same offer entry — your branding, discount and deadline. Ships in the pack as og.png, so your links stop looking naked in chats and timelines.</p></div>
+      <div class="card"><div class="ic">📣</div><h3>Launch posts from the same offer</h3><p>Pre-written X, Reddit, Discord and email posts, filled with your deal — and pointing readers at your page URL. Not published yet? They come out marked DRAFT with a placeholder you replace once the page is live.</p></div>
+      <div class="card"><div class="ic">📄</div><h3>Free page — or the full pack</h3><p>The free tier exports the standalone HTML page, self-contained and host-it-anywhere. PRO is one download: the page, the share banner, the launch copy and a publishing checklist — all from the same offer entry.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="kicker">How it works</div>
+    <h2>From one offer to a publish-ready pack</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Enter the offer once</h3><p>Name, tagline, prices, your checkout link and the end date with its UTC offset. <b>One entry.</b> No account, nothing to install — it runs in your browser and autosaves.</p></div>
+      <div class="step"><div class="n">2</div><h3>Review before you publish</h3><p>The page updates live as you type. Then the pre-flight review runs the tool checks — and hands you the human list: <b>open your checkout and confirm it charges the price you entered.</b></p></div>
+      <div class="step"><div class="n">3</div><h3>Download → host → post</h3><p>Free tier: export the standalone HTML page. PRO: one ZIP — index.html, og.png, launch-copy.txt, publish-checklist.txt. <b>Host the page, drop in your page URL, post.</b></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="center">
+  <div class="wrap">
+    <div class="kicker">Pricing hypothesis</div>
+    <h2>One price for the pack — that's the hypothesis.</h2>
+    <p class="lead">We're testing a single launch price for the complete campaign pack. No subscription, no per-page fees — one download per campaign, yours forever.</p>
+    <div class="pricecard">
+      <span class="tag99">BLACK FRIDAY LAUNCH PRICE</span>
+      <div class="priceline"><span class="old">$49</span><span class="new">$19</span></div>
+      <div class="micro" style="margin-bottom:6px">$19 until Nov 30 · $49 after — one-time, yours forever</div>
+      <ul class="plist">
+        <li>Publish-checklist.txt + launch-copy.txt — the review as files in your pack</li>
+        <li>Campaign pack download: page, og.png, launch copy, checklist</li>
+        <li>Launch posts link to YOUR page URL — DRAFT-marked until it's live</li>
+        <li>Timezone-correct deadline on every piece</li>
+        <li>All 4 themes, no watermark, unlimited pages</li>
+        <li class="free">Free tier: build & preview, 1 of 4 themes, small badge on export, three page variants (BF / Cyber Monday / evergreen) — try before you buy</li>
+      </ul>
+      <div class="fine" style="margin:0 0 18px">A landing-page designer can charge $300–500. Page builders charge $19–49 <b>every month</b>. This is $19, once.</div>
+      <a class="btn primary big" id="buyBtn" href="/app/?buy=1">Unlock PRO — $19</a>
+      <div class="fine">Launch-price hypothesis — checkout is not wired into this build yet, so nothing charges today.</div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="kicker">FAQ</div>
+    <h2>Questions, answered</h2>
+    <div class="faq">
+      <div class="qa"><h3>What exactly is in the pack vs the free export?</h3><p>The free tier exports the standalone deal page as one self-contained HTML file you can host anywhere. The PRO campaign pack is a single ZIP download: index.html (the page), og.png (the matching share banner), launch-copy.txt (posts written from your offer, linking to your public page URL) and publish-checklist.txt (the pre-flight review as a checklist you can tick off).</p></div>
+      <div class="qa"><h3>Where do I host the page? Does it cost anything?</h3><p>Anywhere that serves static files — and the best option is free: drag the downloaded file onto netlify.com/drop. One important detail: an unclaimed Drop site is temporary and password-protected — sign up for a free Netlify account right after dropping to claim your URL. GitHub Pages, Vercel, Cloudflare Pages, your own server — all fine too.</p></div>
+      <div class="qa"><h3>Which payment providers work as my checkout link?</h3><p>Anything with a URL: Lemon Squeezy, Stripe payment links, Gumroad, Polar, Paddle, Whop… the buy button simply opens your link. You keep 100% of the payment relationship.</p></div>
+      <div class="qa"><h3>Does the tool change my checkout or disable my payment link?</h3><p>No. BF Rocket never touches your payment provider — your checkout link is used as-is on the page's buy button. The pre-flight review asks you to open your checkout and confirm it charges the price you entered. And hiding the buy button on the page does not disable your payment link: only your provider controls what customers are actually charged.</p></div>
+      <div class="qa"><h3>What if my page URL isn't decided yet?</h3><p>The launch posts are generated as drafts. Until you've published the page, each post carries a DRAFT label and a placeholder where the URL goes — publish the page, replace the placeholder with the real link, then post.</p></div>
+      <div class="qa"><h3>What happens when the countdown ends?</h3><p>The countdown and the discounted price disappear, and the page shows a clean "the deal has ended — the price is back to normal" message. You can leave it running after the sale without embarrassment.</p></div>
+      <div class="qa"><h3>Do you store my product data or my logo?</h3><p>No. Everything runs in your browser and saves to your own device's local storage. Your logo is embedded into your HTML file. There's no server on our side holding your data.</p></div>
+      <div class="qa"><h3>Can I use it again next year?</h3><p>Yes — it's a one-time purchase, unlimited pages, forever. Update the prices next November and ship the same day.</p></div>
+      <div class="qa"><h3>Why a tool and not a template?</h3><p>Because you'll fiddle with a template for three hours and still miss the countdown logic, the OG tags and the mobile layout. BF Rocket is opinionated on purpose: good defaults, zero decisions, live in 5 minutes.</p></div>
+      <div class="qa"><h3>Why not Carrd, Framer or Canva?</h3><p>You'd still be making every design decision and hand-wiring countdown logic into a generic template. Canva gives you images, not a page. Countdown widgets need a site you already have. BF Rocket is the bundle: the page as one HTML file, the campaign as one download — decided for you.</p></div>
+      <div class="qa"><h3>Can I put the page on my own domain?</h3><p>Yes — and you should for a big sale. Deploy with Netlify Drop, then in the Netlify dashboard open Domain settings → Add a domain and point the DNS records it shows you. Five minutes, free. Vercel and Cloudflare Pages work the same way.</p></div>
+      <div class="qa"><h3>What if something breaks on Friday night?</h3><p>Your exported page is a plain HTML file — open it, click through it, host it on a free preview URL and test the whole flow before the sale. And if the tool itself fails you, the 30-day refund is unconditional (see the refund page).</p></div>
+      <div class="qa"><h3>Can I add product screenshots?</h3><p>Yes — upload one product image and it's placed front and center on the page; your logo and accent color carry the brand everywhere else. Want more image slots? Tell us — it decides what gets built next.</p></div>
+      <div class="qa"><h3>What happens after I pay — and what if I lose my work?</h3><p>Checkout isn't wired into this build yet — the launch price is the hypothesis we're testing, so nothing charges today. Your work autosaves in your browser, and “Save project” exports it as a file you can reload anywhere. For belt-and-braces, download the ⬇ Offline builder — the whole tool as one file that runs with no internet.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <div class="kicker">Your countdown starts now</div>
+    <h2>The easiest traffic you'll ever get<br>is here for <span style="color:var(--accent2)">days</span>, not weeks.</h2>
+    <div class="count">
+      <div class="cd"><b id="f-d">0</b><span>days</span></div>
+      <div class="cd"><b id="f-h">0</b><span>hrs</span></div>
+      <div class="cd"><b id="f-m">0</b><span>min</span></div>
+      <div class="cd"><b id="f-s">0</b><span>sec</span></div>
+    </div>
+    <div class="micro" style="margin-bottom:22px">…until Cyber Monday ends (11:59 PM, US Eastern) — the biggest sales weekend of the year. Enter your offer once and publish it right.</div>
+    <a class="btn primary big" href="/app/">⚡ Build your deal page now</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">© 2026 BF Rocket · a solo-founder product · <a href="/app/">builder</a> · <a href="/refund.html">refunds</a> · <a href="/terms.html">terms</a> · <a href="/privacy.html">privacy</a> · built fast during the <a href="https://www.ship-or-die.com/100k-hackathon">Ship or Die</a> hackathon</div>
+</footer>
+
+<script>
+/* lightweight event tracking — wire to the contest tracker / any analytics when installed */
+function _trk(n){ try{ (window.dataLayer=window.dataLayer||[]).push({event:n}); if(window.console&&console.debug)console.debug("[bfr]",n); }catch(e){} }
+/* countdown to Black Friday weekend end (Nov 30 2026 23:59) */
+var END=new Date("2026-12-01T04:59:00Z"); /* Nov 30, 11:59 PM US Eastern — same instant for every visitor */
+function pad(n){return n<10?"0"+n:""+n}
+function tick(){
+  var diff=END-new Date();
+  if(diff<=0){["f-d","f-h","f-m","f-s"].forEach(function(id){document.getElementById(id).textContent="0"});return}
+  var s=Math.floor(diff/1000);
+  document.getElementById("f-d").textContent=Math.floor(s/86400);
+  document.getElementById("f-h").textContent=pad(Math.floor(s%86400/3600));
+  document.getElementById("f-m").textContent=pad(Math.floor(s%3600/60));
+  document.getElementById("f-s").textContent=pad(s%60);
+  setTimeout(tick,1000);
+}
+tick();
+/* "X days until Black Friday" line — BF itself: Nov 27 2026 */
+var BF=new Date(2026,10,27,0,0,0);
+(function(){
+  var d=Math.ceil((BF-new Date())/86400000);
+  document.getElementById("bfcount").textContent = d>0 ? ("in "+d+" day"+(d===1?"":"s")) : ("TODAY");
+  var rib=document.getElementById("ribTxt");
+  if(rib) rib.textContent = d>0 ? ("BLACK FRIDAY IS IN "+d+" DAYS · ONE OFFER IN, ONE PUBLISH PACK OUT") : ("BLACK FRIDAY IS HERE · ONE OFFER IN, ONE PUBLISH PACK OUT");
+})();
+(function(){
+  var f=document.querySelector(".demo iframe");
+  if(!f) return;
+  var io=new IntersectionObserver(function(en){
+    en.forEach(function(e){
+      if(e.isIntersecting){ f.src=f.dataset.src; io.disconnect(); }
+    });
+  },{rootMargin:"300px"});
+  io.observe(f);
+})();
+</script>
+</body>
+</html>

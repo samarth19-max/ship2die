@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<!-- HACKATHON TRAFFIC TRACKER — paste the official snippet here too (must be live before any /app/ traffic) -->
+<!-- <script src="TRACKER_SNIPPET"></script> -->
+<title>BF Rocket — Black Friday Deal Page Builder</title>
+<meta name="description" content="Build a conversion-ready Black Friday deal page in 5 minutes. Countdown, strikethrough pricing, OG banners, launch kit. One-time $19.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🚀</text></svg>">
+<style>
+  :root{
+    --bg:#0b0c10; --panel:#12141a; --panel2:#171a22; --line:#23262f;
+    --text:#e8eaee; --muted:#9aa1ad; --accent:#ff3b30; --accent2:#ff9500;
+    --ok:#30d158; --radius:12px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg); color:var(--text); font-size:14px;
+  }
+  button{font-family:inherit;}
+  /* ---------- top bar ---------- */
+  .top{
+    display:flex; align-items:center; gap:10px; padding:10px 16px;
+    border-bottom:1px solid var(--line); background:var(--panel);
+    position:sticky; top:0; z-index:50; flex-wrap:wrap;
+  }
+  .logo{font-weight:800; font-size:16px; letter-spacing:-.3px; display:flex; align-items:center; gap:8px;}
+  .logo .flame{filter:drop-shadow(0 0 6px rgba(255,80,40,.6));}
+  .badge{
+    font-size:11px; padding:3px 8px; border-radius:99px; border:1px solid var(--line);
+    color:var(--muted); font-weight:600;
+  }
+  .badge.pro{color:var(--ok); border-color:rgba(48,209,88,.4);}
+  .top .spacer{flex:1;}
+  .btn{
+    border:1px solid var(--line); background:var(--panel2); color:var(--text);
+    padding:8px 14px; border-radius:9px; cursor:pointer; font-weight:600; font-size:13px;
+    transition:all .15s ease; white-space:nowrap;
+  }
+  .btn:hover{border-color:#3a3f4d; background:#1d212b;}
+  .btn.primary{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border:none; color:#fff;
+  }
+  .btn.primary:hover{filter:brightness(1.1);}
+  .btn.ghost{background:transparent;}
+  /* ---------- layout ---------- */
+  .main{display:grid; grid-template-columns:400px 1fr; height:calc(100vh - var(--topH,53px)); height:calc(100dvh - var(--topH,53px));}
+  .formcol{overflow-y:auto; padding:16px; border-right:1px solid var(--line); background:var(--panel);}
+  .prevcol{display:flex; flex-direction:column; background:#05060a;}
+  .prevbar{
+    display:flex; align-items:center; gap:8px; padding:8px 14px;
+    border-bottom:1px solid var(--line); background:var(--panel);
+  }
+  .prevbar .url{
+    flex:1; background:#0b0c10; border:1px solid var(--line); color:var(--muted);
+    padding:6px 12px; border-radius:8px; font-size:12px; font-family:ui-monospace,monospace;
+  }
+  .devicebtn{padding:6px 10px;}
+  .devicebtn.active{border-color:var(--accent); color:var(--accent);}
+  .frame{flex:1; display:flex; justify-content:center; overflow:hidden; padding:0;}
+  .frame iframe{border:none; width:100%; height:100%; background:#fff;}
+  .frame.mobile iframe{max-width:400px; margin:14px 0; border-radius:18px; box-shadow:0 10px 60px rgba(0,0,0,.7);}
+  /* ---------- form ---------- */
+  .sect{margin-bottom:22px;}
+  .sect h3{
+    font-size:11px; text-transform:uppercase; letter-spacing:1.2px; color:var(--muted);
+    margin-bottom:10px; display:flex; align-items:center; gap:8px;
+  }
+  .sect h3 .n{
+    width:18px; height:18px; border-radius:50%; background:var(--panel2);
+    border:1px solid var(--line); display:inline-flex; align-items:center; justify-content:center;
+    font-size:10px; color:var(--text);
+  }
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  label{display:block; font-size:12px; color:var(--muted); margin:10px 0 4px; font-weight:600;}
+  input[type=text],input[type=url],input[type=number],input[type=datetime-local],textarea,select{
+    width:100%; background:#0b0c10; border:1px solid var(--line); color:var(--text);
+    padding:9px 11px; border-radius:8px; font-size:13px; font-family:inherit; outline:none;
+  }
+  input:focus,textarea:focus,select:focus{border-color:#4a5060;}
+  textarea{resize:vertical; min-height:60px;}
+  .hint{font-size:11px; color:#6b7280; margin-top:4px;}
+  .chips{display:flex; gap:6px; flex-wrap:wrap; margin-top:6px;}
+  .chip{
+    border:1px solid var(--line); background:var(--panel2); color:var(--muted);
+    padding:5px 10px; border-radius:99px; cursor:pointer; font-size:12px; font-weight:600;
+  }
+  .chip.active{border-color:var(--accent); color:var(--accent); background:rgba(255,59,48,.08);}
+  .themes{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .theme{
+    border:1.5px solid var(--line); border-radius:10px; overflow:hidden; cursor:pointer;
+    transition:border-color .15s;
+  }
+  .theme.active{border-color:var(--accent);}
+  .theme .swatch{height:44px;}
+  .theme .tname{font-size:11px; padding:6px 8px; color:var(--muted); font-weight:600;}
+  .colorrow{display:flex; align-items:center; gap:10px; margin-top:8px;}
+  input[type=color]{width:44px; height:32px; border:1px solid var(--line); border-radius:8px; background:#0b0c10; padding:2px; cursor:pointer;}
+  .logoup{display:flex; align-items:center; gap:10px; margin-top:8px;}
+  .logoup img{width:40px; height:40px; border-radius:10px; object-fit:cover; border:1px solid var(--line);}
+  .togg{display:flex; align-items:center; justify-content:space-between; margin-top:12px; font-size:13px;}
+  .togg input{width:38px; height:22px; accent-color:var(--accent);}
+  .prolock{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    border:1px dashed rgba(255,149,0,.4); background:rgba(255,149,0,.06);
+    padding:10px 12px; border-radius:10px; margin-top:10px; font-size:12px; color:var(--accent2);
+  }
+  /* ---------- pre-flight review ---------- */
+  .pfverdict{border-radius:10px;padding:12px 14px;font-size:13px;margin-bottom:14px;line-height:1.5}
+  .pfverdict.ok{border:1px solid rgba(48,209,88,.4);background:rgba(48,209,88,.07);color:var(--ok)}
+  .pfverdict.bad{border:1px solid rgba(255,59,48,.45);background:rgba(255,59,48,.07);color:var(--accent)}
+  .pfitem{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);background:#0b0c10;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:13px;line-height:1.45}
+  .pfitem .pfmark{font-weight:900;flex:none;width:18px;text-align:center}
+  .pfitem .pfdetail{color:var(--muted);font-size:12px;margin-top:2px;word-break:break-word}
+  .pfitem.bad{border-color:rgba(255,59,48,.5)}
+  .pfitem.bad .pfmark{color:var(--accent)}
+  .pfitem.warn .pfmark{color:var(--accent2)}
+  .pfitem.good .pfmark{color:var(--ok)}
+  ul.pfhuman{list-style:none;margin:0 0 4px;padding:0}
+  ul.pfhuman li{border:1px solid var(--line);background:#0b0c10;border-radius:10px;padding:10px 12px;margin-bottom:8px;font-size:13px;line-height:1.45;display:flex;gap:10px;align-items:flex-start}
+  ul.pfhuman input[type=checkbox]{width:16px;height:16px;margin-top:1px;accent-color:var(--ok);flex:none}
+  /* ---------- modals ---------- */
+  .modalbg{
+    position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:100;
+    display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  .modalbg.open{display:flex;}
+  .modal{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px;
+    width:min(720px,100%); max-height:86vh; overflow-y:auto; padding:22px;
+  }
+  .modal h2{font-size:18px; margin-bottom:6px;}
+  .modal .sub{color:var(--muted); font-size:13px; margin-bottom:16px;}
+  .copybox{position:relative; margin-bottom:14px;}
+  .copybox pre{
+    background:#0b0c10; border:1px solid var(--line); border-radius:10px; padding:14px;
+    font-size:12px; white-space:pre-wrap; font-family:ui-monospace,SFMono-Regular,monospace;
+    color:#cdd3dd; max-height:180px; overflow-y:auto;
+  }
+  .copybox .btn{position:absolute; top:8px; right:8px; padding:4px 10px; font-size:11px;}
+  .modal .close{float:right; cursor:pointer; color:var(--muted); font-size:20px; line-height:1; background:none; border:none; padding:0; font-family:inherit;}
+  .modal .close:focus-visible{outline:2px solid var(--accent2); outline-offset:2px; border-radius:4px;}
+  input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent2); outline-offset:1px;}
+  .theme:focus-visible,.chip:focus-visible,.btn:focus-visible{outline:2px solid var(--accent2); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important; transition:none!important;}
+  }
+  #ogcanvas{max-width:100%; border-radius:10px; border:1px solid var(--line); display:block; margin:0 auto 14px;}
+  .toast{
+    position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(80px);
+    background:var(--panel2); border:1px solid var(--line); color:var(--text);
+    padding:10px 18px; border-radius:10px; font-size:13px; font-weight:600;
+    transition:transform .25s ease; z-index:200;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0);}
+  @media(max-width:900px){
+    .main{display:flex; flex-direction:column; height:auto;}
+    .prevcol{order:-1; position:sticky; top:var(--topH,53px); z-index:5; height:34vh; min-height:220px; flex:none;}
+    .formcol{border-right:none; border-bottom:1px solid var(--line); overflow:visible;}
+    .frame{min-height:34vh;}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo"><span class="flame">🚀</span> BF Rocket <span style="color:var(--muted);font-weight:500;font-size:12px;">deal page builder</span></div>
+  <span class="badge" id="licBadge">FREE — watermark on</span>
+  <div class="spacer"></div>
+  <button class="btn ghost" onclick="fillDemo()">Try demo</button>
+  <button class="btn" onclick="openOG()">OG banner</button>
+  <button class="btn" onclick="openKitGated()">Launch kit</button>
+  <button class="btn" onclick="openModal('licModal')">🔓 Unlock PRO</button>
+  <button class="btn" onclick="openPreflight()" title="Run the pre-flight review">🧪 Check</button>
+  <button class="btn primary" onclick="downloadPage()">⬇ Download page</button>
+
+<div class="main">
+  <!-- ================= FORM ================= -->
+  <div class="formcol">
+    <div id="firstRun" style="background:rgba(255,149,0,.08);border:1px solid rgba(255,149,0,.35);border-radius:10px;padding:10px 12px;font-size:12.5px;color:#ffb35c;margin-bottom:16px">👋 This is a sample page. Make it yours: replace the <b>product name</b>, <b>prices</b> and <b>checkout link</b> — the preview updates live. <a href="#" onclick="document.getElementById('firstRun').remove();return false" style="color:inherit">Dismiss</a></div>
+
+    <div class="sect">
+      <h3><span class="n">1</span> Product</h3>
+      <label for="f_name">Product name <span style="color:var(--accent)">*</span></label>
+      <input type="text" id="f_name" oninput="upd('name',this.value)">
+      <label for="f_tag">Tagline <span style="color:#6b7280;font-weight:400">(one punchy sentence)</span></label>
+      <input type="text" id="f_tag" oninput="upd('tag',this.value)">
+      <label for="f_desc">Description</label>
+      <textarea id="f_desc" oninput="upd('desc',this.value)"></textarea>
+      <label for="f_feats">Feature bullets <span style="color:#6b7280;font-weight:400">(one per line, max 6)</span></label>
+      <textarea id="f_feats" oninput="upd('feats',this.value.split('\n').slice(0,6))"></textarea>
+      <label for="f_logo">Logo</label>
+      <div class="logoup">
+        <img id="logoPrev" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><rect width='40' height='40' rx='8' fill='%23171a22'/><text x='20' y='26' text-anchor='middle' font-size='18'>🚀</text></svg>">
+        <input type="file" id="f_logo" accept="image/*" style="display:none" onchange="loadLogo(this)">
+        <button class="btn" onclick="document.getElementById('f_logo').click()">Upload</button>
+        <button class="btn ghost" id="logoRm" style="display:none" onclick="rmLogo()">Remove</button>
+      </div>
+      <div class="hint">PNG/JPG/SVG · stays on your device, embedded into your page</div>
+      <label for="f_shot">Product image <span style="color:#6b7280;font-weight:400">(optional — screenshots sell)</span></label>
+      <div class="logoup">
+        <img id="shotPrev" style="display:none;max-width:120px;max-height:60px;object-fit:cover;border-radius:8px;border:1px solid var(--line)">
+        <input type="file" id="f_shot" accept="image/*" style="display:none" onchange="loadShot(this)">
+        <button class="btn" onclick="document.getElementById('f_shot').click()">Upload</button>
+        <button class="btn ghost" id="shotRm" style="display:none" onclick="rmShot()">Remove</button>
+      </div>
+      <div class="hint">JPG/PNG up to 500KB · placed front and center on your page</div>
+    </div>
+
+    <div class="sect">
+      <h3><span class="n">2</span> Deal</h3>
+      <div class="row" style="grid-template-columns:1fr 1fr 78px">
+        <div>
+          <label for="f_old">Regular price <span style="color:var(--accent)">*</span></label>
+          <input type="number" id="f_old" min="0" oninput="upd('old',Math.max(0,parseFloat(this.value)||0))">
+        </div>
+        <div>
+          <label for="f_new">Deal price <span style="color:var(--accent)">*</span></label>
+          <input type="number" id="f_new" min="0" oninput="upd('new',Math.max(0,parseFloat(this.value)||0))">
+        </div>
+        <div>
+          <label for="f_cur">Currency</label>
+          <input type="text" id="f_cur" maxlength="4" oninput="upd('currency',this.value)">
+        </div>
+      </div>
+      <label>Quick discounts</label>
+      <div class="chips" id="discChips"></div>
+      <label for="f_end">Deal ends</label>
+      <div style="display:flex;gap:8px">
+        <input type="datetime-local" id="f_end" oninput="updEnd(this.value)" style="flex:1;min-width:0">
+        <select id="f_tz" onchange="updTz(this.value)" style="flex:none;width:auto;padding-left:6px;padding-right:6px" aria-label="Deadline timezone"></select>
+      </div>
+      <div class="hint" id="tzHint" aria-live="polite"></div>
+      <div class="chips">
+        <button class="chip" onclick="setEnd('bf')">BF weekend</button>
+        <button class="chip" onclick="setEnd('cm')">Cyber Monday</button>
+        <button class="chip" onclick="setEnd('dec')">Dec 1</button>
+      </div>
+      <label for="f_url"><span style="color:var(--accent)">*</span> Checkout link <span style="color:#6b7280;font-weight:400">(Lemon Squeezy / Stripe / Gumroad / Polar payment link)</span></label>
+      <input type="url" id="f_url" placeholder="https://yourstore.lemonsqueezy.com/buy/xxx" oninput="upd('url',this.value)">
+      <label for="f_cta">Button text</label>
+      <input type="text" id="f_cta" oninput="upd('cta',this.value)">
+      <label for="f_ribbon">Top ribbon text</label>
+      <input type="text" id="f_ribbon" oninput="upd('ribbon',this.value)">
+      <div class="chips" id="ribbonChips"></div>
+      <div class="togg"><span>Show “money-back guarantee” line</span><input type="checkbox" id="f_guar" onchange="upd('guar',this.checked)"></div>
+      <div class="hint">Compliance: enable only if YOU will honor a 30-day refund for your product — the line is a promise printed on your page.</div>
+    </div>
+
+    <div class="sect">
+      <h3><span class="n">3</span> Social proof <span style="color:#6b7280;text-transform:none;letter-spacing:0;font-weight:500">(optional)</span></h3>
+      <label for="f_t1">Testimonial 1 <span style="color:#6b7280;font-weight:400">(only real quotes you have permission to publish)</span></label>
+      <input type="text" id="f_t1" placeholder="“Best money I spent this year.” — Alex, indie founder" oninput="upd('t1',this.value)">
+      <label for="f_t2">Testimonial 2</label>
+      <input type="text" id="f_t2" oninput="upd('t2',this.value)">
+    </div>
+
+    <div class="sect">
+      <h3><span class="n">4</span> Design</h3>
+      <div class="themes" id="themeGrid"></div>
+      <div class="colorrow">
+        <input type="color" id="f_accent" onchange="upd('accent',this.value)">
+        <div style="font-size:12px;color:var(--muted)">Accent color</div>
+      </div>
+      <label for="f_lang">Page language <span style="color:#6b7280;font-weight:400">(for SEO + screen readers — page text stays English)</span></label>
+      <select id="f_lang" onchange="upd('lang',this.value)">
+        <option value="en">English</option><option value="de">Deutsch</option><option value="fr">Français</option>
+        <option value="es">Español</option><option value="pt">Português</option><option value="it">Italiano</option>
+        <option value="nl">Nederlands</option><option value="hi">हिन्दी</option>
+      </select>
+    </div>
+
+    <div class="sect">
+      <h3><span class="n">5</span> Publish</h3>
+      <div class="prolock" id="proNote">
+        <span>🚫 Free: build & preview, 1 theme, watermarked export. PRO removes the watermark + unlocks all 4 themes, the OG banner generator and the launch kit.</span>
+        <button class="btn" onclick="openModal('licModal')">Unlock</button>
+      </div>
+      <label for="f_ana">Analytics snippet <span style="color:#6b7280;font-weight:400">(optional — GoatCounter, Plausible, Cloudflare Insights…)</span></label>
+      <textarea id="f_ana" placeholder="<script ...></script> — paste your provider's snippet" oninput="upd('analytics',this.value)"></textarea>
+      <div class="hint">Embedded into your export only (max 4000 chars, must be a &lt;script&gt; snippet), so you know if the deal actually converts. The live preview never runs your snippet — open the downloaded file to see it work.</div>
+      <label for="f_purl">Live URL of your page <span style="color:#6b7280;font-weight:400">(optional — paste after hosting for perfect social cards)</span></label>
+      <input type="url" id="f_purl" placeholder="https://yourdeal.netlify.app" oninput="upd('pageUrl',this.value)">
+      <div class="hint">Set this and re-export: your og:image and og:url become absolute URLs, so WhatsApp/X/Facebook previews always render.</div>
+      <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="btn primary" onclick="downloadPage()">⬇ Black Friday page</button>
+        <button class="btn" onclick="downloadPage('cm')">⬇ Cyber Monday page</button>
+        <button class="btn" onclick="downloadPage('eg')">⬇ Evergreen offer page</button>
+        <button class="btn" onclick="openPreflight()">🧪 Pre-flight review</button>
+        <button class="btn" onclick="downloadPack()">📦 Campaign pack (PRO)</button>
+        <button class="btn" onclick="viewFullscreen()">👁 View fullscreen</button>
+        <button class="btn ghost" onclick="saveProject()">💾 Save project</button>
+        <button class="btn ghost" onclick="document.getElementById('projFile').click()">📂 Load project</button>
+        <button class="btn ghost" onclick="downloadBuilder()">⬇ Offline builder</button>
+        <button class="btn ghost" onclick="resetAll()">Reset</button>
+      </div>
+      <input type="file" id="projFile" accept=".json,application/json" style="display:none" onchange="loadProject(this)">
+      <div class="hint" style="margin-top:10px">
+        One form → three variants (ribbon text swaps automatically). Deploy in 30 seconds: drag the file onto <b>netlify.com/drop</b> — then sign up free immediately, because an unclaimed Drop link is temporary and password-protected.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= PREVIEW ================= -->
+  <div class="prevcol">
+    <div class="prevbar">
+      <div class="url" id="urlLabel">preview — auto-saved locally</div>
+      <button class="btn devicebtn active" id="devDesk" onclick="setDevice('desktop')" aria-label="Desktop preview" aria-pressed="true">🖥</button>
+      <button class="btn devicebtn" id="devMob" onclick="setDevice('mobile')" aria-label="Mobile preview" aria-pressed="false">📱</button>
+    </div>
+    <div class="frame" id="frame"><iframe id="pv" title="preview"></iframe></div>
+  </div>
+</div>
+
+<!-- ================= LAUNCH KIT MODAL ================= -->
+<div class="modalbg" id="kitModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="kitTitle">
+    <button class="close" aria-label="Close" onclick="closeModals()">×</button>
+    <h2 id="kitTitle">🚀 Launch kit</h2>
+    <div class="sub">Copy-paste texts pre-filled with your deal. Post on X, Reddit, your Discord or Slack communities, and submit to the deal directories below.</div>
+    <div id="kitBoxes"></div>
+    <h2 style="font-size:15px;margin-top:10px">📍 Submit your deal to these (free)</h2>
+    <div class="sub" style="margin-bottom:10px">Each takes 2–5 min. Do all of them — this is free traffic.</div>
+    <pre style="background:#0b0c10;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12px;color:#cdd3dd">indiegoodies.com/blackfriday      rarebigdeal.com
+indieapp.sales                    indiehackers.com (deal thread)
+xgenious.com/black-friday-saas-deals    creditforstartups.com/black-friday-software-deals
+pimjo.com (blog deals)            + Product Hunt "Black Friday" collections</pre>
+  </div>
+</div>
+
+<!-- ================= OG MODAL ================= -->
+<div class="modalbg" id="ogModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ogTitle">
+    <button class="close" aria-label="Close" onclick="closeModals()">×</button>
+    <h2 id="ogTitle">🖼 OG banner generator</h2>
+    <div class="sub">1200×630 social share image with your branding. Download, host it anywhere (e.g. same folder as your page, named <b>og.png</b>), and your page already references it.</div>
+    <canvas id="ogcanvas" width="1200" height="630" role="img" aria-label="Preview of the generated 1200 by 630 social share banner"></canvas>
+    <div style="text-align:center"><button class="btn primary" onclick="downloadOG()">⬇ Download og.png</button></div>
+  </div>
+</div>
+
+<!-- ================= PRE-FLIGHT REVIEW MODAL ================= -->
+<div class="modalbg" id="pfModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="pfTitle">
+    <button class="close" aria-label="Close" onclick="closeModals()">×</button>
+    <h2 id="pfTitle">🧪 Pre-flight review</h2>
+    <div class="sub">Before anything goes public: what this tool can verify about your campaign, and what only you can verify in the real world.</div>
+    <div class="hint" id="pfCampaign" style="margin-bottom:10px"></div>
+    <div id="pfVerdict" class="pfverdict" aria-live="polite"></div>
+    <h2 style="font-size:15px;margin-top:4px">🤖 Checked by the tool</h2>
+    <div id="pfChecks" style="margin-bottom:16px"></div>
+    <h2 style="font-size:15px">🙋 Only you can check these</h2>
+    <div class="sub" style="margin-bottom:8px">No builder can verify these from here — tick them off in the real world:</div>
+    <ul id="pfHuman" class="pfhuman"></ul>
+    <div class="pfitem bad" style="margin-top:12px">
+      <span class="pfmark">⚠</span>
+      <div><b>Important</b><div class="pfdetail">Hiding the button or changing the page does NOT disable your payment link or change your provider's price. Only your payment provider (Lemon Squeezy / Stripe / Gumroad / Polar) controls what customers are actually charged.</div></div>
+    </div>
+    <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="btn primary" onclick="downloadPack()">📦 Download campaign pack (PRO)</button>
+      <span class="hint" id="pfPackHint">ZIP with index.html + og.png + launch-copy.txt + publish-checklist.txt</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= LICENSE MODAL ================= -->
+<div class="modalbg" id="licModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="licTitle" style="width:min(520px,100%)">
+    <button class="close" aria-label="Close" onclick="closeModals()">×</button>
+    <h2 id="licTitle">🔓 Unlock PRO — $19 one-time</h2>
+    <div class="sub">All 4 themes · no watermark · OG banner · launch kit · lifetime use on unlimited pages. Pay once, keep it forever.</div>
+    <div style="text-align:center;margin-bottom:18px">
+      <button class="btn primary" id="buyBtn" style="padding:14px 28px;font-size:15px" onclick="goBuy()">Get PRO — $19</button>
+      <div class="hint" style="margin-top:8px">One-time purchase · 30-day money-back guarantee (see the refund page)</div>
+    </div>
+    <label for="licInput">Already have a license key?</label>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="licInput" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX">
+      <button class="btn" onclick="activateLicense()">Activate</button>
+    </div>
+    <div class="hint" id="licMsg" style="margin-top:8px" aria-live="polite"></div>
+  </div>
+</div>
+
+<!-- ================= FULLSCREEN PREVIEW (in-page: popup blockers can kill window.open) ================= -->
+<div class="modalbg" id="fsModal" style="padding:14px" role="dialog" aria-modal="true" aria-label="Fullscreen preview">
+  <div style="width:100%;height:100%;position:relative;background:#05060a;border-radius:12px;overflow:hidden">
+    <iframe id="fsFrame" title="fullscreen preview" style="width:100%;height:100%;border:none;background:#fff"></iframe>
+    <button class="btn primary" style="position:absolute;top:14px;right:14px;z-index:10" onclick="closeModals()">✕ Close</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Copied!</div>
+
+<script>
+/* =====================================================================
+   BF ROCKET — configuration
+   Set these once the Lemon Squeezy product exists:
+===================================================================== */
+var CFG_STORE = {
+  BUY_URL: "",            // e.g. https://yourstore.lemonsqueezy.com/checkout/buy/UUID?embed=1
+  STORE_API: "",          // e.g. https://yourstore.lemonsqueezy.com  (license activation base)
+  UNLOCK_TOKENS: [        // per-buyer offline unlock tokens — NEVER ship a master token in public source
+  ]
+};
+
+/* ---------------- state ---------------- */
+var DEFAULTS = {
+  name:"Your Product", tag:"The tool your workflow was missing.",
+  desc:"Tell visitors what your product does and who it is for. Two sentences max — deal pages convert on clarity, not essays.",
+  feats:["Feature one — what it does","Feature two — why it matters","Feature three — the time it saves"],
+  logo:"", old:49, new:19, end:"", endIso:"", tz:"", url:"", cta:"Grab the deal",
+  ribbon:"BLACK FRIDAY — LIMITED TIME", t1:"", t2:"", shot:"", analytics:"", pageUrl:"", currency:"$", lang:"en", pfTicks:[false,false,false,false,false],
+  theme:"midnight", accent:"#ff3b30", guar:false
+};
+var cfg = load();
+var licensed = false;
+var DEMO = false;   // landing embed mode: don't persist anything the visitor types
+
+function load(){
+  try{
+    var raw = lsGet("bfr_cfg");
+    if(raw){
+      try{ var c=Object.assign({}, DEFAULTS, JSON.parse(raw)); migrateCfg(c); return c; }
+      catch(pe){
+        try{ localStorage.setItem("bfr_cfg_corrupt", raw); }catch(e){}
+        setTimeout(function(){ toast("Your saved project was corrupted and couldn't be restored — a backup was kept. Starting fresh."); },800);
+      }
+    }
+  }catch(e){}
+  var d=Object.assign({}, DEFAULTS);
+  migrateCfg(d);
+  return d;
+}
+/* older saved projects had a naive deadline and no timezone — give them this device's offset */
+function migrateCfg(c){
+  if(!c.tz || offsetStrToMinutes(c.tz)===null) c.tz=browserOffsetStr();
+  if(c.end && (!c.endIso || isNaN(new Date(c.endIso).getTime()))) c.endIso=endToIso(c.end,c.tz);
+}
+function save(){
+  if(DEMO) return;
+  try{ var ul=$("urlLabel"); if(ul && !ul.dataset.base) ul.dataset.base=ul.textContent; }catch(e){}   // the demo is ephemeral — never clobber a real project
+  try{ localStorage.setItem("bfr_cfg", JSON.stringify(cfg)); }
+  catch(e){
+    var now=Date.now();
+    if(!save._lastWarn || now-save._lastWarn>10000){
+      save._lastWarn=now;
+      toast("⚠️ Browser storage is full — your latest edits may not survive a reload. Remove the logo or shorten text.");
+    }
+  }
+}
+var _pending=false, _lastHtml=null;
+function scheduleSaveRender(){
+  if(_pending) return;
+  _pending=true;
+  setTimeout(function(){
+    _pending=false;
+    save(); buildChips(); render();
+  }, 250);
+}
+function flushPending(){ if(_pending){ _pending=false; save(); } }
+window.addEventListener("beforeunload", flushPending);
+window.addEventListener("storage", function(e){
+  if(e.key==="bfr_cfg" && !DEMO && !_pending) toast("Project changed in another tab — reload to pick up the latest version.");
+});
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden") flushPending(); });
+function upd(k,v){
+  if(k==="old"||k==="new") v=Math.max(0,parseFloat(String(v).replace(",","."))||0);
+  cfg[k]=v;
+  if(k==="old"||k==="new") buildChips();
+  scheduleSaveRender();
+}
+function $(id){ return document.getElementById(id); }
+
+/* ---------------- themes ---------------- */
+var THEMES = {
+  midnight:{ label:"Midnight", bg:"#0a0a0f", panel:"#141420", text:"#f2f3f7", sub:"#a0a6b8", btn:"#ffffff", btnText:"#0a0a0f", head:"system-ui" },
+  ember:   { label:"Ember",    bg:"#120c08", panel:"#1e140c", text:"#f7ede2", sub:"#c0a48e", btn:"#ff9500", btnText:"#1a0e02", head:"Georgia, serif" },
+  snow:    { label:"Snow",     bg:"#f6f7f9", panel:"#ffffff", text:"#111318", sub:"#5b6270", btn:"#111318", btnText:"#ffffff", head:"system-ui" },
+  neon:    { label:"Neon",     bg:"#070510", panel:"#0e0b1e", text:"#eef2ff", sub:"#9a9ec9", btn:"#22ff88", btnText:"#04120a", head:"system-ui" }
+};
+function buildThemeGrid(){
+  var g=$("themeGrid"); g.innerHTML="";
+  var sw={ midnight:"linear-gradient(135deg,#0a0a0f,#ff3b30)", ember:"linear-gradient(135deg,#1e140c,#ff9500)",
+           snow:"linear-gradient(135deg,#e8ecf2,#111318)", neon:"linear-gradient(135deg,#0e0b1e,#22ff88)" };
+  Object.keys(THEMES).forEach(function(k){
+    var d=document.createElement("button");
+    d.type="button";
+    d.className="theme"+(cfg.theme===k?" active":"");
+    d.setAttribute("aria-pressed", cfg.theme===k ? "true" : "false");
+    d.setAttribute("aria-label", THEMES[k].label+" theme"+(k==="midnight"?" (free)":" (PRO)"));
+    d.innerHTML='<div class="swatch" style="background:'+sw[k]+'"></div><div class="tname">'+THEMES[k].label+(k==="midnight"?" · free":"")+'</div>';
+    d.onclick=function(){ if((k!=="midnight")&&!licensed){ openModal("licModal"); toast("PRO theme — unlock to use"); return;} cfg.theme=k; save(); buildThemeGrid(); render(); };
+    g.appendChild(d);
+  });
+}
+
+/* ---------------- discounts ---------------- */
+var CHIPS=[30,40,50,60,70,80];
+function buildChips(){
+  var c=$("discChips"); c.innerHTML="";
+  CHIPS.forEach(function(p){
+    var np=Math.max(1, Math.round(cfg.old*(1-p/100)));
+    var d=document.createElement("button");
+    d.className="chip"+(cfg.new===np&&p>0?" active":"");
+    d.textContent="-"+p+"% → $"+np;
+    d.onclick=function(){ cfg.new=np; $("f_new").value=np; save(); buildChips(); render(); };
+    c.appendChild(d);
+  });
+}
+function setEnd(which){
+  var d=new Date(), y=d.getFullYear();
+  // BF weekend ends Sunday Nov 29 · Cyber Monday is Nov 30 (Thanksgiving = 4th Thursday → BF = Fri Nov 27)
+  if(which==="bf"){ d.setFullYear(y,10,29); d.setHours(23,59,0,0); }
+  else if(which==="cm"){ d.setFullYear(y,10,30); d.setHours(23,59,0,0); }
+  else { d.setFullYear(y,11,1); d.setHours(23,59,0,0); }                      // Dec 1
+  var s=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
+  cfg.end=s; cfg.endIso=endToIso(s,cfg.tz); $("f_end").value=s; save(); updateTzHint(); render();
+}
+function updEnd(v){
+  cfg.end=v;
+  /* keep the last valid instant while the user is mid-typing a partial value */
+  cfg.endIso = endToIso(v,cfg.tz) || (v ? cfg.endIso : "");
+  save(); updateTzHint(); render();
+}
+function updTz(v){
+  cfg.tz=v;
+  if(cfg.end) cfg.endIso = endToIso(cfg.end,cfg.tz) || cfg.endIso;   // same wall-clock time in the new timezone → new instant
+  save(); updateTzHint(); render();
+}
+
+/* =====================================================================
+   CAMPAIGN + DEADLINE — one source of truth for "when does the deal end".
+   The deadline is stored as a full ISO string WITH UTC offset (e.g.
+   2026-12-31T23:59:00+02:00), so every visitor counts down to the exact
+   same instant no matter their local timezone.
+===================================================================== */
+var TZ_OFFSETS=[-720,-660,-600,-570,-540,-480,-420,-360,-300,-240,-210,-180,-120,-60,0,60,120,180,210,240,270,300,330,345,360,390,420,450,480,510,525,540,570,600,630,660,720,765,780,840];
+function minutesToOffsetStr(m){
+  m=Math.round(Number(m)||0);
+  var sign=m<0?"-":"+", a=Math.abs(m);
+  return sign+("0"+Math.floor(a/60)).slice(-2)+":"+("0"+(a%60)).slice(-2);
+}
+function offsetStrToMinutes(s){
+  var m=/^([+-])(\d{1,2}):(\d{2})$/.exec(String(s||"").trim());
+  if(!m) return null;
+  var v=parseInt(m[2],10)*60+parseInt(m[3],10);
+  return m[1]==="-" ? -v : v;
+}
+function browserOffsetStr(){ return minutesToOffsetStr(-new Date().getTimezoneOffset()); }
+/* naive datetime-local value + chosen offset → ISO string WITH offset */
+function endToIso(naive,tz){
+  var s=String(naive||"");
+  if(!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(s)) return "";
+  if(s.length===16) s+=":00";
+  var off=offsetStrToMinutes(tz);
+  if(off===null) off=offsetStrToMinutes(browserOffsetStr());
+  if(off===null) off=0;
+  return s+minutesToOffsetStr(off);
+}
+/* the absolute instant the countdown targets (null when nothing usable is set) */
+function endInstant(o){
+  o=o||cfg;
+  if(o.endIso){ var d=new Date(o.endIso); if(!isNaN(d.getTime())) return d; }
+  if(o.end){ var d2=new Date(o.end); if(!isNaN(d2.getTime())) return d2; }
+  return null;
+}
+function fmtDateAtTz(ms,offMin,withTime){
+  var MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var d=new Date(ms+(offMin||0)*60000);
+  var out=MO[d.getUTCMonth()]+" "+d.getUTCDate();
+  if(withTime){
+    var h=d.getUTCHours(), ap=h<12?"AM":"PM", h12=h%12||12;
+    out+=", "+h12+":"+("0"+d.getUTCMinutes()).slice(-2)+" "+ap;
+  }
+  return out;
+}
+function offsetLabel(offMin){
+  var a=Math.abs(offMin||0);
+  return "UTC"+((offMin||0)<0?"-":"+")+Math.floor(a/60)+(a%60?":"+("0"+(a%60)).slice(-2):"");
+}
+/* "Dec 31, 11:59 PM (UTC+2)" — the campaign's own timezone, never the viewer's */
+function fmtEndInTz(o){
+  o=o||cfg;
+  var d=endInstant(o); if(!d) return "";
+  var off=offsetStrToMinutes(o.tz); if(off===null) off=0;
+  return fmtDateAtTz(d.getTime(),off,true)+" ("+offsetLabel(off)+")";
+}
+/* fallback deadline: next Cyber Monday (Nov 30) — computed, never hardcoded */
+function fallbackNaiveEnd(){
+  var fb=new Date(); fb.setMonth(10,30); fb.setHours(23,59,0,0);
+  if(fb<=new Date()) fb.setFullYear(fb.getFullYear()+1);
+  return new Date(fb.getTime()-fb.getTimezoneOffset()*60000).toISOString().slice(0,16);
+}
+/* single source of truth for the exported countdown: an absolute instant */
+function effectiveEndIso(o){
+  o=o||cfg;
+  if(o.endIso){ var d=new Date(o.endIso); if(!isNaN(d.getTime())) return o.endIso; }
+  if(o.end && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(String(o.end))) return endToIso(o.end,o.tz);
+  return endToIso(fallbackNaiveEnd(),o.tz);
+}
+function fmtEndDisplay(o){
+  var iso=effectiveEndIso(o), d=new Date(iso);
+  if(isNaN(d.getTime())) return "";
+  var off=offsetStrToMinutes(o.tz);
+  if(off===null) off=-new Date().getTimezoneOffset();
+  return fmtDateAtTz(d.getTime(),off,true)+" ("+offsetLabel(off)+")";
+}
+/* campaign identity, derived from the ribbon preset + product name */
+function campaignWord(o){
+  o=o||cfg;
+  var seg=String(o.ribbon||"").split("—")[0].trim();
+  if(!seg) return "Black Friday";
+  return seg.toLowerCase().replace(/(^|[\s\-])([a-z])/g,function(_,a,b){ return a+b.toUpperCase(); });
+}
+function campaignLabel(o){
+  o=o||cfg;
+  var nm=String(o.name||"").trim(), rb=String(o.ribbon||"").split("—")[0].trim();
+  return (nm && rb) ? nm+" — "+rb : (nm||rb||"");
+}
+/* analytics runs ONLY in the exported page — never inside the builder preview.
+   Guards: preview mode omits silently; otherwise it must look like a <script>
+   snippet and stay under 4000 chars. */
+function analyticsHtml(o,opts){
+  var a=String((o&&o.analytics)||"");
+  if(!a) return "";
+  if(opts && opts.preview) return "";
+  if(a.length>4000) return "";
+  if(a.indexOf("<scr"+"ipt")===-1) return "";
+  return a;
+}
+function buildTzSelect(){
+  var s=$("f_tz"); if(!s) return;
+  s.innerHTML="";
+  var dev=browserOffsetStr();
+  TZ_OFFSETS.forEach(function(m){
+    var v=minutesToOffsetStr(m);
+    var o=document.createElement("option");
+    o.value=v; o.textContent="UTC"+v+(v===dev?" (device)":"");
+    s.appendChild(o);
+  });
+}
+function updateTzHint(){
+  var el=$("tzHint"); if(!el) return;
+  var d=endInstant(cfg);
+  el.textContent = d
+    ? "Ends "+fmtEndInTz(cfg)+" — the typed time is read in the selected timezone and the countdown ends at this exact instant for every visitor, wherever they are."
+    : "The timezone your deadline counts down in (default: this device).";
+}
+
+/* =====================================================================
+   RENDERER — builds the full standalone deal page HTML
+   (used for both live preview and the downloaded file)
+===================================================================== */
+function cur(o){ return (o&&o.currency)||cfg.currency||"$"; }
+function fitTop(){
+  try{ var t=document.querySelector(".top"); if(t) document.documentElement.style.setProperty("--topH", t.offsetHeight+"px"); }catch(e){}
+}
+function discountPct(o){
+  o = o || cfg;
+  if(o.old>0 && o.new>0 && o.new<o.old) return Math.round((1-o.new/o.old)*100);
+  return 0;
+}
+function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+/* pick black/white text that stays readable on any accent color the user picks */
+function bestText(hex){
+  // WCAG-correct: linearize sRGB channels, compute relative luminance, pick the
+  // candidate text color with the higher measured contrast ratio.
+  function lin(c){
+    c=c/255;
+    return c<=0.03928 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4);
+  }
+  function lum(hex){
+    var h=String(hex||"#000").replace("#","");
+    if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    var r=lin(parseInt(h.slice(0,2),16)), g=lin(parseInt(h.slice(2,4),16)), b=lin(parseInt(h.slice(4,6),16));
+    return 0.2126*r+0.7152*g+0.0722*b;
+  }
+  function contrast(a,b){
+    var la=lum(a), lb=lum(b);
+    var hi=Math.max(la,lb), lo=Math.min(la,lb);
+    return (hi+0.05)/(lo+0.05);
+  }
+  var dark="#111318", white="#ffffff";
+  return contrast(hex,dark)>=contrast(hex,white) ? dark : white;
+}
+
+function renderer(o, opts){
+  opts=opts||{};
+  if(o.logo && !/^data:image\//.test(o.logo)) o.logo="";   // defense-in-depth: only image data URLs
+  if(o.shot && !/^data:image\//.test(o.shot)) o.shot="";
+  var t=THEMES[o.theme]||THEMES.midnight;
+  var pct=discountPct(o);
+  var feats=(o.feats||[]).filter(Boolean);
+  var noCount=!!o.noCountdown;
+  var badge = opts.watermark
+    ? '<a href="https://bfrocket-qmc2.zai-ai.site" target="_blank" rel="noopener" style="position:fixed;bottom:10px;right:12px;background:rgba(0,0,0,.75);color:#fff;font-size:11px;padding:6px 10px;border-radius:99px;text-decoration:none;font-family:system-ui">⚡ Built with BF Rocket — make yours in 5 min</a>'
+    : "";
+  var logo = o.logo
+    ? '<img src="'+o.logo+'" alt="logo" style="width:56px;height:56px;border-radius:14px;object-fit:cover;box-shadow:0 4px 20px rgba(0,0,0,.3)">'
+    : '<div style="width:56px;height:56px;border-radius:14px;background:'+o.accent+';display:flex;align-items:center;justify-content:center;font-size:26px">🔥</div>';
+  var priceBlock =
+    '<div id="priceRow" style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;justify-content:center">'+
+      (pct>0?'<span style="font-size:26px;color:'+t.sub+';text-decoration:line-through">'+cur(o)+o.old+'</span>':'')+
+      '<span style="font-size:64px;font-weight:900;letter-spacing:-2px;color:'+t.text+'">'+cur(o)+o.new+'</span>'+
+      (pct>0?'<span style="background:'+o.accent+';color:'+bestText(o.accent)+';font-weight:800;font-size:18px;padding:6px 14px;border-radius:10px">-'+pct+'%</span>':'')+
+    '</div>';
+  var featsHtml = feats.length ? '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;max-width:760px;margin:44px auto 0">'+
+      feats.map(function(f){
+        return '<div style="background:'+t.panel+';border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:16px;text-align:left;font-size:14.5px;color:'+t.text+';display:flex;gap:10px;align-items:flex-start"><span style="color:'+o.accent+';font-weight:900">✓</span><span>'+esc(f)+'</span></div>';
+      }).join("")+'</div>' : '';
+  var tstm = [];
+  if(o.t1) tstm.push(o.t1); if(o.t2) tstm.push(o.t2);
+  var tstmHtml = tstm.length ? '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;max-width:760px;margin:20px auto 0">'+
+      tstm.map(function(x){ return '<div style="background:'+t.panel+';border-radius:14px;padding:18px;font-size:14px;color:'+t.text+';font-style:italic">'+esc(x)+'</div>'; }).join("")+'</div>' : '';
+  var guar = o.guar ? '<div style="font-size:12.5px;color:'+t.sub+';margin-top:10px">✓ Instant access &nbsp;·&nbsp; ✓ 30-day money-back guarantee</div>' : '';
+
+  var cw=campaignWord(o);
+  var title = (pct>0 ? '🔥 '+o.name+' — '+pct+'% off '+cw : '🔥 '+o.name+' — '+cw);
+  var descSnip = (o.tag||o.desc||'').slice(0,155);
+
+  // deadline: one absolute ISO instant (with offset) — identical countdown for every
+  // visitor. Fallback when unset: next Cyber Monday (Nov 30), in the campaign's timezone.
+  var endIso=effectiveEndIso(o);
+  var endOff=offsetStrToMinutes(o.tz); if(endOff===null) endOff=-new Date().getTimezoneOffset();
+  var endDisp=fmtDateAtTz(new Date(endIso).getTime(),endOff,true)+" ("+offsetLabel(endOff)+")";
+
+  return '<!DOCTYPE html>\n<html lang="'+esc(o.lang||"en")+'"><head><meta charset="UTF-8">'+
+  '<meta name="viewport" content="width=device-width,initial-scale=1">'+
+  '<title>'+esc(title)+'</title>'+
+  '<meta name="description" content="'+esc(descSnip)+'">'+
+  '<meta property="og:title" content="'+esc(title)+'">'+
+  '<meta property="og:description" content="'+esc(descSnip)+'">'+
+  '<meta property="og:type" content="website">'+
+  (opts.watermark
+    ? ''
+    : (o.pageUrl
+        ? '<meta property="og:url" content="'+esc(o.pageUrl)+'">'+
+          '<meta property="og:image" content="'+esc(o.pageUrl.replace(/\/+$/,""))+'/og.png">'+
+          '<meta name="twitter:image" content="'+esc(o.pageUrl.replace(/\/+$/,""))+'/og.png">'
+        : '<meta property="og:image" content="og.png">')+
+      '<meta property="og:image:width" content="1200">'+
+      '<meta property="og:image:height" content="630">'+
+      '<meta name="twitter:card" content="summary_large_image">')+
+  '<meta name="twitter:title" content="'+esc(title)+'">'+
+  '<meta name="twitter:description" content="'+esc(descSnip)+'">'+
+  '<style>'+
+  '*{box-sizing:border-box;margin:0;padding:0}'+
+  'html,body{height:100%}'+
+  'body{background:'+t.bg+';color:'+t.text+';font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}'+
+  '.ribbon{background:'+o.accent+';color:'+bestText(o.accent)+';text-align:center;font-weight:800;font-size:13px;letter-spacing:1.5px;padding:10px 16px}'+
+  '.ribbon .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#fff;margin-right:8px;animation:p 1.2s infinite}'+
+  '@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}'+
+  '.hero{max-width:860px;margin:0 auto;padding:64px 20px 48px;text-align:center}'+
+  'h1{font-size:clamp(34px,6vw,58px);font-weight:900;letter-spacing:-1.5px;line-height:1.08;margin:20px 0 12px}'+
+  '.tag{font-size:19px;color:'+t.sub+';max-width:560px;margin:0 auto;line-height:1.5}'+
+  '.desc{font-size:15.5px;color:'+t.sub+';max-width:620px;margin:14px auto 0;line-height:1.6}'+
+  '.count{display:flex;gap:10px;justify-content:center;margin:36px 0}'+
+  '.cd{background:'+t.panel+';border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px 0;min-width:84px}'+
+  '.cd b{display:block;font-size:34px;font-weight:900;font-variant-numeric:tabular-nums}'+
+  '.cd span{font-size:10.5px;text-transform:uppercase;letter-spacing:1.5px;color:'+t.sub+'}'+
+  '.cta{display:inline-block;background:'+t.btn+';color:'+t.btnText+';font-weight:800;font-size:19px;padding:18px 44px;border-radius:16px;text-decoration:none;transition:transform .15s ease,box-shadow .15s ease;box-shadow:0 8px 30px rgba(0,0,0,.35)}'+
+  '.cta:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(0,0,0,.45)}'+
+  '.dealend{display:none;background:'+t.panel+';border:1px solid rgba(255,255,255,.1);color:'+t.sub+';padding:16px 24px;border-radius:14px;font-size:16px;font-weight:700}'+
+  '.sec{text-align:center;padding:10px 20px 70px}'+
+  '.endline{text-align:center;color:'+t.sub+';font-size:13px;margin-top:26px}'+
+  '.foot{border-top:1px solid rgba(255,255,255,.07);padding:26px;text-align:center;color:'+t.sub+';font-size:12.5px}'+
+  '@media(max-width:640px){.cd{min-width:64px;padding:10px 0}.cd b{font-size:24px}.cta{width:100%;max-width:340px}}'+
+  '</style></head><body>'+
+  '<div class="ribbon"><span class="dot"></span>'+esc(o.ribbon||'BLACK FRIDAY — LIMITED TIME')+'</div>'+
+  '<div class="hero">'+
+    '<div style="display:flex;justify-content:center">'+logo+'</div>'+
+    '<h1>'+esc(o.name)+'</h1>'+
+    '<div class="tag">'+esc(o.tag)+'</div>'+
+    (o.desc?'<div class="desc">'+esc(o.desc)+'</div>':'')+
+    (o.shot?'<div style="margin:26px auto 0"><img src="'+o.shot+'" alt="product preview" style="max-width:min(540px,92%);max-height:300px;border-radius:16px;box-shadow:0 14px 44px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12)"></div>':'')+
+    (noCount?'':  '<div class="count" aria-hidden="true">'+
+      '<div class="cd"><b id="cd-d">0</b><span>days</span></div>'+
+      '<div class="cd"><b id="cd-h">0</b><span>hrs</span></div>'+
+      '<div class="cd"><b id="cd-m">0</b><span>min</span></div>'+
+      '<div class="cd"><b id="cd-s">0</b><span>sec</span></div>'+
+    '</div>')+
+    priceBlock+
+    '<div style="margin-top:34px">'+
+      '<a class="cta" id="mainCta" href="'+esc(o.url ? (/^https?:\/\//i.test(o.url)?o.url:"https://"+o.url) : '#')+'"'+(o.url?' target="_blank" rel="noopener"':'')+'>'+esc(o.cta||'Grab the deal')+' →</a>'+
+      (noCount?'':' <div class="dealend" id="dealEnd" role="status">⌛ The deal has ended — the price is back to normal.</div>')+
+      guar+
+    '</div>'+
+  '</div>'+
+  '<div class="sec">'+featsHtml+tstmHtml+
+    (noCount?'':'<div class="endline">Offer ends <b id="endDate"></b>. When the timer hits zero, the price goes back up.</div>')+
+  '</div>'+
+  '<div class="foot">© '+new Date().getFullYear()+' '+esc(o.name)+'</div>'+
+  badge+
+  '<script>\n'+
+  'var end=new Date("' + esc(endIso) + '");\n'+
+  'function pad(n){return n<10?"0"+n:""+n}\n'+
+  'function q(id){return document.getElementById(id)}\n'+
+  'function tick(){\n'+
+  '  if(!q("cd-d")) return;   // evergreen variant has no countdown\n'+
+  '  var diff=end-new Date();\n'+
+  '  if(diff<=0){\n'+
+  '    q("cd-d").parentNode.parentNode.style.display="none";\n'+
+  '    var pr=q("priceRow"); if(pr){pr.style.display="none";}\n'+
+  '    var de=q("dealEnd"); if(de){de.style.display="inline-block";}\n'+
+  '    var c=q("mainCta"); if(c){c.style.display="none";}\n'+
+  '    return;\n'+
+  '  }\n'+
+  '  var s=Math.floor(diff/1000),d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);\n'+
+  '  q("cd-d").textContent=d;\n'+
+  '  q("cd-h").textContent=pad(h);\n'+
+  '  q("cd-m").textContent=pad(m);\n'+
+  '  q("cd-s").textContent=pad(s%60);\n'+
+  '  setTimeout(tick,1000);\n'+
+  '}\n'+
+  'var en=q("endDate"); if(en) en.textContent='+JSON.stringify(endDisp)+';\n'+
+  'tick();\n'+
+  /* NOTE: the closing tags are split below so that server-side HTML injectors
+     (which rewrite the first literal closing body tag they find) can never
+     mutate this template string — a mutated string here shipped broken JS. */
+  '<\/script>\n'+
+  analyticsHtml(o,opts)+'\n'+
+  '</bo' + 'dy></ht' + 'ml>';
+}
+
+/* ---------------- preview + export ---------------- */
+var iframe=$("pv");
+function render(){
+  var html = renderer(cfg,{watermark:!licensed,preview:true});   // preview never executes user snippets
+  if(html===_lastHtml) return;                    // identical output → skip the remount
+  var sy=0;
+  try{ sy=iframe.contentWindow?iframe.contentWindow.scrollY:0; }catch(e){}
+  iframe.srcdoc = html;
+  _lastHtml = html;
+  if(sy){ try{ iframe.onload=function(){ try{ iframe.contentWindow.scrollTo(0,sy); }catch(e){} iframe.onload=null; }; }catch(e){} }
+  $("urlLabel").textContent = "preview — " + (cfg.name||"deal page").toLowerCase().replace(/[^a-z0-9]+/g,"-") + ".bf-deal";
+}
+/* one form → three page variants (a one-prompt clone won't ship this) */
+function downloadPage(variant){
+  track(variant ? "download_variant_"+variant : "download_free");
+  var o=Object.assign({},cfg);
+  if(variant==="cm") o.ribbon="CYBER MONDAY — ENDS TONIGHT";
+  else if(variant==="eg"){ o.ribbon="LIMITED-TIME OFFER"; o.noCountdown=true; }
+  var html = renderer(o,{watermark:!licensed});
+  var slug = (cfg.name||"deal").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "deal";
+  if(variant) slug+="-"+variant;
+  var blob=new Blob([html],{type:"text/html"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=slug+"-bf-deal.html";
+  a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+  var fails=licensed?[]:preflightChecks().filter(function(c){return c.state==="fail"});
+  if(fails.length){
+    track("download_with_fails",fails.length);
+    toast("Downloaded — but "+fails.length+" thing"+(fails.length>1?"s are":" is")+" still missing. Run 🧪 Check before you publish.");
+  }else{
+    toast(licensed ? "Downloaded — remember: Netlify Drop without a free account gives a temporary, password-protected link. Claim it right after dropping." : "Downloaded (free watermark) — PRO removes it");
+  }
+}
+function viewFullscreen(){
+  // in-page overlay: popup blockers can silently kill window.open, so never rely on it
+  $("fsFrame").srcdoc = renderer(cfg,{watermark:!licensed,preview:true});
+  $("fsModal").classList.add("open");
+}
+function setDevice(mode){
+  $("frame").className="frame"+(mode==="mobile"?" mobile":"");
+  $("devDesk").className="btn devicebtn"+(mode==="desktop"?" active":"");
+  $("devMob").className="btn devicebtn"+(mode==="mobile"?" active":"");
+  $("devDesk").setAttribute("aria-pressed", mode==="desktop" ? "true" : "false");
+  $("devMob").setAttribute("aria-pressed", mode==="mobile" ? "true" : "false");
+}
+
+/* =====================================================================
+   PRE-FLIGHT REVIEW — two clearly separated sections:
+   1. what this tool can verify (pass/fail), 2. what only the user can verify.
+===================================================================== */
+function preflightChecks(){
+  var o=cfg, out=[];
+  var u=String(o.url||"").trim();
+  var uNoScheme=!!u && !/^https?:\/\//i.test(u);
+  var uBad=!u || u==="#" || u.toLowerCase().indexOf("example.com")>-1 || uNoScheme;
+  out.push({ state:uBad?"fail":"pass", label:"Checkout link", focus:"f_url",
+    detail:uBad ? (uNoScheme ? "“"+u+"” is missing https:// — the button would 404. Fixed automatically on export, but paste the full link to be sure."
+                     : (u ? "“"+u+"” is empty, # or a sample link — buyers can't actually pay"
+                          : "No checkout link — the page button would point at #"))
+                : "Points at "+u });
+  var p=String(o.pageUrl||"").trim();
+  var pOk=!!p && /^https?:\/\//i.test(p);
+  out.push({ state:pOk?"pass":"warn", label:"Public page URL", focus:"f_purl",
+    detail:pOk ? "Share posts link to "+p
+               : "Not decided yet — that's fine: it unlocks after you host. Share posts stay DRAFT with a placeholder until then." });
+  var d=endInstant(o);
+  var dOk=!!d && d.getTime()>Date.now()+3600000;
+  out.push({ state:dOk?"pass":"fail", label:"Deadline", focus:"f_end",
+    detail:!d ? "No deadline set"
+            : (dOk ? fmtEndInTz(o)+" — more than an hour away"
+                   : (d.getTime()>Date.now() ? "Less than an hour away ("+fmtEndInTz(o)+")"
+                                             : "Already passed ("+fmtEndInTz(o)+")")) });
+  var pct=discountPct(o);
+  var priceOk=o.new>0 && o.old>0 && o.new<o.old && pct>=1 && pct<=99 && Math.round((1-o.new/o.old)*100)===pct;
+  out.push({ state:priceOk?"pass":"fail", label:"Prices", focus:"f_old",
+    detail:priceOk ? "$"+o.old+" regular → $"+o.new+" sale — the page badge shows -"+pct+"% (math re-checked)"
+                   : (o.old>0 && o.new>=o.old ? "Sale price $"+o.new+" is not below regular price $"+o.old
+                                              : "Prices missing or invalid") });
+  var cl=campaignLabel(o);
+  out.push({ state:cl?"pass":"fail", label:"Campaign label", focus:"f_name",
+    detail:cl || "Empty — add a product name and/or a ribbon" });
+  out.push({ state:ogGenerated?"pass":"warn", label:"og.png",
+    detail:ogGenerated ? "Generated — the campaign pack bakes in a fresh copy; keep og.png beside index.html when you host"
+                       : "Not generated yet — the pack will include a fresh one, but remember og.png must sit beside your HTML when you host" });
+  return out;
+}
+function openPreflight(){
+  track("pf_open");
+  var checks=preflightChecks();
+  var fails=checks.filter(function(c){ return c.state==="fail"; });
+  var box=$("pfChecks"); box.innerHTML="";
+  checks.forEach(function(c){
+    var d=document.createElement("div");
+    d.className="pfitem "+(c.state==="fail"?"bad":c.state==="warn"?"warn":"good");
+    d.innerHTML='<span class="pfmark">'+(c.state==="fail"?"✕":c.state==="warn"?"!":"✓")+'</span><div><b>'+esc(c.label)+'</b><div class="pfdetail">'+esc(c.detail)+'</div></div>';
+    box.appendChild(d);
+  });
+  var v=$("pfVerdict");
+  cfg.pfTicks=cfg.pfTicks||[false,false,false,false,false];
+  var allTicked=cfg.pfTicks.filter(Boolean).length>=3;
+  if(fails.length){
+    track("pf_fail",fails.map(function(c){return c.label}).join(", "));
+    v.className="pfverdict bad";
+    v.innerHTML='<b>Not ready to share.</b> Failing: '+fails.map(function(c,i){
+      return '<a href="#" style="color:inherit" onclick="pfFixNow(\''+(c.focus||"")+'\');return false">'+esc(c.label)+'</a>';
+    }).join(", ")+'. '+
+      '<button class="btn" style="padding:5px 12px;font-size:12px;margin-left:6px" onclick="pfFixNow(\''+ (fails[0].focus||"") +'\')">Fix these now</button>'+
+      (licensed?'':'<button class="btn" style="padding:5px 12px;font-size:12px;margin-left:6px" onclick="downloadPage()">⬇ Download the free page anyway</button>')+
+      '<div class="pfdetail" style="margin-top:6px">The pack download still works — the checklist inside explains why these matter — but fix them before anything goes public.</div>';
+    $("pfPackHint").textContent="Download still allowed — fix the failing items before you share anything public.";
+  }else if(!allTicked){
+    v.className="pfverdict ok";
+    v.innerHTML="<b>Tool checks passed.</b> That only means the campaign data is consistent — tick off the human checks below, then download the pack.";
+    $("pfPackHint").textContent="ZIP with index.html + og.png + launch-copy.txt + publish-checklist.txt";
+  }else{
+    track("pf_pass");
+    v.className="pfverdict ok";
+    v.innerHTML="<b>✅ Campaign data is consistent.</b> Tool checks passed and your real-world checks are ticked. Content claims on the page — guarantees, testimonials, prices — are yours to verify. Download the pack and publish.";
+    $("pfPackHint").textContent="ZIP with index.html + og.png + launch-copy.txt + publish-checklist.txt";
+  }
+  $("pfCampaign").textContent="Campaign: "+(campaignLabel()||"(unnamed)")+(fmtEndInTz(cfg)?" · ends "+fmtEndInTz(cfg):" · no deadline set");
+  var hu=$("pfHuman"); hu.innerHTML="";
+  [
+    "Open your checkout link ("+(cfg.url||"none set")+"), buy through it once, and confirm it actually charges "+cur(cfg)+cfg.new+".",
+    "Confirm your provider's discount/coupon is active until the deadline ("+(fmtEndInTz(cfg)||"no deadline set")+").",
+    "Confirm the deadline timezone ("+(cfg.tz||browserOffsetStr())+") matches your provider's sale window.",
+    (cfg.guar ? "Your page prints a 30-day money-back guarantee — confirm you will actually honor it." : null),
+    (String(cfg.analytics||"").trim() ? "Your analytics runs on YOUR exported page — your visitors' data is your responsibility (privacy notice / consent where required)." : null)
+  ].filter(Boolean).forEach(function(t,i){
+    var li=document.createElement("li");
+    li.innerHTML='<label style="display:flex;gap:10px;align-items:flex-start;width:100%"><input type="checkbox"'+(cfg.pfTicks[i]?" checked":"")+' onchange="pfTick('+i+',this.checked)"><span>'+esc(t)+'</span></label>';
+    hu.appendChild(li);
+  });
+  openModal("pfModal");
+}
+function pfTick(i,checked){
+  cfg.pfTicks=cfg.pfTicks||[false,false,false,false,false];
+  cfg.pfTicks[i]=!!checked; save();
+  var fails=preflightChecks().filter(function(c){return c.state==="fail"});
+  var allTicked=cfg.pfTicks.filter(Boolean).length>=3;
+  var v=$("pfVerdict");
+  if(fails.length){ /* stay in fail state; verdict text already explains */ }
+  else if(allTicked){ track("pf_pass"); v.className="pfverdict ok"; v.innerHTML="<b>✅ Campaign data is consistent.</b> Tool checks passed and your real-world checks are ticked. Content claims on the page — guarantees, testimonials, prices — are yours to verify. Download the pack and publish."; }
+  else { v.className="pfverdict ok"; v.innerHTML="<b>Tool checks passed.</b> That only means the campaign data is consistent — tick off the human checks below, then download the pack."; }
+}
+function pfFixNow(fieldId){
+  closeModals();
+  if(!fieldId) return;
+  try{
+    var el=$(fieldId);
+    if(el){ el.scrollIntoView({block:"center",behavior:"smooth"}); el.focus({preventScroll:true});
+      el.style.borderColor="var(--accent)"; setTimeout(function(){ el.style.borderColor=""; },1800); }
+  }catch(e){}
+}
+
+/* ---------------- hand-rolled ZIP (stored / no compression) ---------------- */
+var CRC_TABLE=null;
+function crcTable(){
+  if(CRC_TABLE) return CRC_TABLE;
+  CRC_TABLE=new Uint32Array(256);
+  for(var n=0;n<256;n++){ var c=n; for(var k=0;k<8;k++){ c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1); } CRC_TABLE[n]=c>>>0; }
+  return CRC_TABLE;
+}
+function crc32(bytes){
+  var t=crcTable(), c=0xFFFFFFFF;
+  for(var i=0;i<bytes.length;i++){ c=t[(c^bytes[i])&0xFF]^(c>>>8); }
+  return (c^0xFFFFFFFF)>>>0;
+}
+function dosDateTime(d){
+  d=d||new Date();
+  return [ (d.getHours()<<11)|(d.getMinutes()<<5)|Math.floor(d.getSeconds()/2),
+           (((d.getFullYear()-1980)&0x7f)<<9)|((d.getMonth()+1)<<5)|d.getDate() ];
+}
+/* minimal ZIP writer: local file headers + central directory + EOCD, every entry stored */
+function zipStore(files){
+  var enc=new TextEncoder();
+  var names=files.map(function(f){ return enc.encode(f.name); });
+  var datas=files.map(function(f){ return (f.data instanceof Uint8Array)?f.data:enc.encode(String(f.data)); });
+  var dt=dosDateTime(), offs=[], crcs=[], total=0, i;
+  for(i=0;i<files.length;i++){ offs.push(total); crcs.push(crc32(datas[i])); total+=30+names[i].length+datas[i].length; }
+  var cdStart=total;
+  for(i=0;i<files.length;i++){ total+=46+names[i].length; }
+  total+=22;
+  var buf=new Uint8Array(total), dv=new DataView(buf.buffer), p=0;
+  function w16(v){ dv.setUint16(p,v,true); p+=2; }
+  function w32(v){ dv.setUint32(p,v>>>0,true); p+=4; }
+  function wb(b){ buf.set(b,p); p+=b.length; }
+  for(i=0;i<files.length;i++){
+    w32(0x04034b50); w16(20); w16(0x0800); w16(0); w16(dt[0]); w16(dt[1]);
+    w32(crcs[i]); w32(datas[i].length); w32(datas[i].length); w16(names[i].length); w16(0);
+    wb(names[i]); wb(datas[i]);
+  }
+  for(i=0;i<files.length;i++){
+    w32(0x02014b50); w16(20); w16(20); w16(0x0800); w16(0); w16(dt[0]); w16(dt[1]);
+    w32(crcs[i]); w32(datas[i].length); w32(datas[i].length); w16(names[i].length);
+    w16(0); w16(0); w16(0); w16(0); w32(0); w32(offs[i]); wb(names[i]);
+  }
+  w32(0x06054b50); w16(0); w16(0); w16(files.length); w16(files.length);
+  w32(total-cdStart-22); w32(cdStart); w16(0);   // cd size excludes this 22-byte EOCD
+  return buf;
+}
+
+/* ---------------- campaign pack contents ---------------- */
+function packCopyTxt(){
+  var K=kitTexts(), L=[];
+  L.push("LAUNCH COPY — "+(campaignLabel()||"Untitled campaign"));
+  L.push("Generated by BF Rocket · "+new Date().toISOString());
+  L.push("");
+  if(K.draft){
+    L.push("STATUS: DRAFT — no public page URL is set yet.");
+    L.push("Every post below contains the placeholder [PUBLISH-THEN-REPLACE: your page URL].");
+    L.push("Publish index.html first, paste its URL into the builder's “Public page URL” field, then re-download this pack. Never post the placeholder.");
+  }else{
+    L.push("STATUS: READY — posts link to "+cfg.pageUrl);
+  }
+  L.push("");
+  [["X POST",K.x_post],["X THREAD OPENER",K.x_thread],["REDDIT POST",K.reddit],["DISCORD / SLACK",K.discord],["EMAIL BLAST",K.email],["OG IMAGE NOTE",K.og_note]].forEach(function(p){
+    L.push("==== "+p[0]+(K.draft&&p[0]!=="OG IMAGE NOTE"?" — DRAFT":"")+" ====");
+    L.push(p[1]);
+    L.push("");
+  });
+  return L.join("\n");
+}
+function packChecklistTxt(){
+  var tz=cfg.tz||browserOffsetStr(), L=[];
+  L.push("PUBLISH CHECKLIST — "+(campaignLabel()||"Untitled campaign"));
+  L.push("Generated by BF Rocket · "+new Date().toISOString());
+  L.push("");
+  L.push("PART 1 — ONLY YOU CAN VERIFY THESE (no builder can check them for you)");
+  L.push("");
+  L.push("[ ] Open your checkout link ("+(cfg.url||"NOT SET")+"), complete a test purchase, and confirm it actually charges "+cur(cfg)+cfg.new+".");
+  L.push("[ ] Confirm your provider's discount/coupon is active until the deadline ("+(fmtEndInTz(cfg)||"no deadline set")+").");
+  L.push("[ ] Confirm the deadline timezone ("+tz+") matches your provider's sale window.");
+  L.push("");
+  L.push("Remember: hiding the button or changing the page does NOT disable the payment link or change the provider's price. Only your payment provider (Lemon Squeezy / Stripe / Gumroad / Polar) controls what customers are actually charged.");
+  L.push("");
+  L.push("PART 2 — SHIP IT");
+  L.push("");
+  L.push("1. Host the folder: drag index.html + og.png (both are in this ZIP) onto netlify.com/drop — or any static host.");
+  L.push("2. Optional: add your custom domain in your host's settings.");
+  L.push("3. Open the live URL and verify the page: ribbon, countdown, prices, button.");
+  var steps=[];
+  steps.push("Click the button on the LIVE page and verify the checkout charges "+cur(cfg)+cfg.new+".");
+  if(cfg.guar) steps.push("Your page prints a 30-day money-back guarantee — confirm you will honor it for your product.");
+  if(String(cfg.analytics||"").trim()) steps.push("Your analytics runs on your page — add a privacy notice / consent banner for your visitors where required.");
+  steps.push("Paste your live page URL back into the builder and re-download the pack so launch-copy.txt links to the real URL.");
+  steps.forEach(function(t,i){ L.push((i+1)+". "+t); });
+  L.push("5. Paste the live URL into the builder's “Public page URL” field, re-download this pack, and only then share the launch-copy posts (real URL, no placeholders).");
+  return L.join("\n");
+}
+/* one download: index.html + og.png + launch-copy.txt + publish-checklist.txt (PRO) */
+function downloadPack(){
+  if(!licensed){ openModal("licModal"); toast("Campaign pack is a PRO feature"); return; }
+  track("pack_download");
+  renderOG();   // og.png must sit beside index.html — bake it fresh from the current campaign
+  var html=renderer(cfg,{watermark:!licensed});
+  var copy=packCopyTxt(), check=packChecklistTxt();
+  $("ogcanvas").toBlob(function(png){
+    if(!png){ toast("Couldn't export og.png — try again"); return; }
+    png.arrayBuffer().then(function(ab){
+      var zip=zipStore([
+        {name:"index.html", data:new TextEncoder().encode(html)},
+        {name:"og.png", data:new Uint8Array(ab)},
+        {name:"launch-copy.txt", data:new TextEncoder().encode(copy)},
+        {name:"publish-checklist.txt", data:new TextEncoder().encode(check)}
+      ]);
+      var slug=(campaignLabel()||"campaign").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"campaign";
+      var a=document.createElement("a");
+      a.href=URL.createObjectURL(new Blob([zip],{type:"application/zip"}));
+      a.download=slug+"-campaign-pack.zip";
+      a.click();
+      toast("Campaign pack downloaded — index.html + og.png + launch-copy.txt + publish-checklist.txt 📦");
+    });
+  },"image/png");
+}
+
+/* ---------------- logo ---------------- */
+function loadLogo(inp){
+  var f=inp.files[0]; if(!f) return;
+  if(f.size>300*1024){ toast("Logo too big — keep it under 300KB"); return; }
+  var r=new FileReader();
+  r.onload=function(){ cfg.logo=r.result; save(); $("logoPrev").src=r.result; $("logoRm").style.display=""; scheduleSaveRender(); render(); renderOG(); };
+  r.onerror=function(){ toast("Couldn't read that file — try a different one"); };
+  r.readAsDataURL(f);
+}
+function rmLogo(){ cfg.logo=""; save(); $("logoRm").style.display="none"; render(); renderOG(); }
+function loadShot(inp){
+  var f=inp.files[0]; if(!f) return;
+  if(f.size>500*1024){ toast("Image too big — keep it under 500KB"); return; }
+  var r=new FileReader();
+  r.onload=function(){ cfg.shot=r.result; save(); $("shotPrev").src=r.result; $("shotPrev").style.display=""; $("shotRm").style.display=""; render(); };
+  r.readAsDataURL(f);
+}
+function rmShot(){ cfg.shot=""; save(); $("shotPrev").style.display="none"; $("shotRm").style.display="none"; render(); }
+function downloadBuilder(){
+  fetch(location.href).then(function(r){ return r.text(); }).then(function(html){
+    var clean=html.replace(/<script src="\/\.__zcode[^"]*" defer><\/script>/g, "");
+    var blob=new Blob([clean],{type:"text/html"});
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob); a.download="bfrocket-builder-offline.html"; a.click();
+    toast("Offline builder saved — it runs from a double-click, no internet needed");
+  }).catch(function(){ toast("Couldn't fetch — save the page with Ctrl+S instead"); });
+}
+var RIBBONS=["BLACK FRIDAY — LIMITED TIME","CYBER MONDAY — ENDS TONIGHT","NEW YEAR SALE — ENDS SOON","WINTER SALE — LIMITED TIME","LAUNCH WEEK — SPECIAL PRICE"];
+function buildRibbons(){
+  var c=$("ribbonChips"); if(!c) return; c.innerHTML="";
+  RIBBONS.forEach(function(r){
+    var d=document.createElement("button");
+    d.className="chip"+(cfg.ribbon===r?" active":"");
+    d.textContent=r.split("—")[0].trim();
+    d.title=r;
+    d.onclick=function(){ cfg.ribbon=r; $("f_ribbon").value=r; save(); buildRibbons(); render(); };
+    c.appendChild(d);
+  });
+}
+
+/* ---------------- OG canvas ---------------- */
+var ogGenerated=false;   // flips true once renderOG() has drawn — the pre-flight review uses it as a reminder
+function renderOG(){
+  var c=$("ogcanvas"), x=c.getContext("2d");
+  var t=THEMES[cfg.theme]||THEMES.midnight;
+  var pct=discountPct();
+  // bg
+  x.fillStyle=t.bg; x.fillRect(0,0,1200,630);
+  var g=x.createRadialGradient(1000,80,10,1000,80,700);
+  g.addColorStop(0,hexA(cfg.accent,.35)); g.addColorStop(1,"rgba(0,0,0,0)");
+  x.fillStyle=g; x.fillRect(0,0,1200,630);
+  // ribbon
+  x.fillStyle=cfg.accent; x.fillRect(0,0,1200,64);
+  x.fillStyle=bestText(cfg.accent); x.font="800 26px system-ui"; x.textBaseline="middle";
+  x.fillText((cfg.ribbon||"BLACK FRIDAY — LIMITED TIME").toUpperCase(),60,33);
+  // discount burst
+  if(pct>0){
+    x.fillStyle=cfg.accent;
+    x.beginPath(); x.arc(1010,400,120,0,7); x.fill();
+    x.fillStyle=bestText(cfg.accent); x.textAlign="center";
+    x.font="900 74px system-ui"; x.fillText("-"+pct+"%",1010,390);
+    x.font="700 24px system-ui"; x.fillText("BF DEAL",1010,432);
+    x.textAlign="left";
+  }
+  // logo circle
+  x.beginPath(); x.arc(140,220,64,0,7);
+  x.fillStyle=t.panel; x.fill();
+  if(cfg.logo){ x.save(); x.beginPath(); x.arc(140,220,60,0,7); x.clip(); x.drawImage(logoImg(),80,160,120,120); x.restore(); }
+  else { x.font="44px system-ui"; x.textAlign="center"; x.fillText("🔥",140,235); x.textAlign="left"; }
+  // name + tag
+  x.fillStyle=t.text; x.font="900 72px system-ui";
+  x.fillText(clip(x,cfg.name||"Your Product",72,820),230,215);
+  x.fillStyle=t.sub; x.font="500 32px system-ui";
+  x.fillText(clip(x,cfg.tag||"",32,900),230,285);
+  // price
+  x.font="900 88px system-ui"; x.fillStyle=t.text;
+  var curS=cur(cfg);
+  var newW=x.measureText(curS+cfg.new).width;
+  x.fillText(curS+cfg.new,230,470);
+  if(pct>0){
+    var x0=230+newW+24;
+    x.font="700 42px system-ui"; x.fillStyle=t.sub;
+    x.fillText(curS+cfg.old,x0,470);
+    var w1=x.measureText(curS+cfg.old).width;
+    x.strokeStyle=t.sub; x.lineWidth=4;
+    x.beginPath(); x.moveTo(x0,455); x.lineTo(x0+w1,455); x.stroke();
+  }
+  // cta pill
+  x.fillStyle=t.btn; roundRect(x,230,530,420,64,16); x.fill();
+  x.fillStyle=t.btnText; x.font="800 28px system-ui";
+  x.fillText((cfg.cta||"Grab the deal").toUpperCase()+" →",254,563);
+  ogGenerated=true;
+}
+function hexA(hex,a){
+  var h=String(hex||"#000").replace("#","");
+  if(h.length===3) h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  var r=parseInt(h.slice(0,2),16)||0, g=parseInt(h.slice(2,4),16)||0, b=parseInt(h.slice(4,6),16)||0;
+  return "rgba("+r+","+g+","+b+","+a+")";
+}
+var _logoImg=null;
+function logoImg(){
+  if(_logoImg && _logoImg.src===cfg.logo) return _logoImg;
+  _logoImg=new Image(); _logoImg.src=cfg.logo;
+  _logoImg.onload=function(){ renderOG(); };
+  return _logoImg;
+}
+function clip(x,s,size,maxW){
+  s=String(s||"");
+  if(x.measureText(s).width>maxW){ while(s.length>4 && x.measureText(s+"…").width>maxW) s=s.slice(0,-1); s+="…"; }
+  return s;
+}
+function roundRect(x,a,b,w,h,r){
+  x.beginPath(); x.moveTo(a+r,b);
+  x.arcTo(a+w,b,a+w,b+h,r); x.arcTo(a+w,b+h,a,b+h,r);
+  x.arcTo(a,b+h,a,b,r); x.arcTo(a,b,a+w,b,r); x.closePath();
+}
+function downloadOG(){ renderOG(); var a=document.createElement("a"); a.href=$("ogcanvas").toDataURL("image/png"); a.download="og.png"; a.click(); toast("og.png downloaded"); }
+
+/* ---------------- launch kit ---------------- */
+function kitTexts(){
+  var pct=discountPct();
+  var cw=campaignWord();
+  var endStr=fmtEndInTz(cfg) || fmtEndDisplay({end:"",endIso:"",tz:cfg.tz});
+  /* Share posts point at the PUBLIC page (where the deal lives), never the checkout
+     link. No public URL yet → label DRAFT and use an explicit placeholder. */
+  var pub=String(cfg.pageUrl||"").trim();
+  var draft=!pub;
+  var u=pub || "[PUBLISH-THEN-REPLACE: your page URL]";
+  var tag=cfg.tag||"";
+  var draftNote="\n\n(DRAFT — placeholder link: publish your page, set its URL in the builder, then replace before posting.)";
+  var hash=cw.replace(/[^A-Za-z0-9]/g,"")||"BlackFriday";
+  return {
+    draft:draft,
+    x_post: "🚀 "+cw+" deal is LIVE:\n\n"+(cfg.name||"My product")+" — "+(pct>0?pct+"% off":"on sale")+" ("+cur(cfg)+cfg.old+" → "+cur(cfg)+cfg.new+")\n"+tag+"\n\nEnds "+endStr+". Don't sleep on it 👇\n"+u+"\n\n#"+hash+new Date().getFullYear()+" #buildinpublic"+(draft?draftNote:""),
+    x_thread: "1/\n"+cw+", but for builders who hate marketing.\n\nI made "+(cfg.name||"my product")+": "+(tag||"one useful thing")+"\n\nThis week only it's $"+cfg.new+" instead of $"+cfg.old+".\n\nWhy I built it 🧵👇"+(draft?"\n\n(DRAFT — finish the thread with your public page URL once it's live.)":""),
+    reddit: "**"+(cfg.name||"My product")+" — "+(pct>0?pct+"% off for "+cw+" ($"+cfg.old+" → $"+cfg.new+")":"on sale for $"+cfg.new)+"**\n\n"+(cfg.desc||"")+"\n\nWhat it does:\n"+(cfg.feats||[]).filter(Boolean).map(function(f){return "- "+f}).join("\n")+"\n\nDeal ends "+endStr+": "+u+"\n\nHappy to answer questions — built it solo."+(draft?draftNote:""),
+    discord: "@everyone 🚀 "+cw+" deal: **"+(cfg.name||"my product")+"** — "+(pct>0?pct+"% off ":"")+"($"+cfg.old+" → **$"+cfg.new+"), ends "+endStr+". "+u+"\n\nBuilt by a solo founder, would mean a lot 🙏"+(draft?draftNote:""),
+    email: "Subject: "+(cfg.name||"Our")+" — "+(pct>0?pct+"% off, ends "+endStr:cw+" deal inside")+"\n\nHi,\n\nQuick one: "+(cfg.name||"our product")+" is "+(pct>0?pct+"% off":"on sale")+" until "+endStr+" ($"+cfg.old+" → $"+cfg.new+").\n\n"+tag+"\n\nGrab it here: "+u+"\n\nThat's it — happy shipping!"+(draft?"\n\n(DRAFT — placeholder link: replace with your live page URL before sending.)":""),
+    og_note: "og.png is referenced by your exported page. Download it from the OG banner tool (or grab it from the campaign pack), put it in the same folder as your HTML file when you deploy."
+  };
+}
+function openKit(){
+  var K=kitTexts(), box=$("kitBoxes"); box.innerHTML="";
+  if(K.draft){
+    var w=document.createElement("div"); w.className="pfitem warn";
+    w.innerHTML='<span class="pfmark">!</span><div><b>DRAFT posts</b><div class="pfdetail">No public page URL set — every post below uses the placeholder [PUBLISH-THEN-REPLACE: your page URL]. Publish your page, set the URL in the builder, then copy the final versions.</div></div>';
+    box.appendChild(w);
+  }
+  [["Post on X (tweet)",K.x_post],["X thread opener",K.x_thread],["Reddit post (r/SaaS, r/SideProject, r/InternetIsBeautiful)",K.reddit],["Discord / Slack blurb",K.discord],["Email blast",K.email],["OG image note",K.og_note]].forEach(function(p){
+    var d=document.createElement("div"); d.className="copybox";
+    d.innerHTML='<pre>'+esc(p[1])+'</pre><button class="btn" onclick="copyTxt(this)">Copy</button>';
+    d.dataset.txt=p[1];
+    box.appendChild(d);
+  });
+}
+function copyTxt(btn){
+  var txt=btn.parentElement.dataset.txt;
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){toast("Copied!")},function(){
+    var ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select();
+    document.execCommand("copy"); ta.remove(); toast("Copied!");
+  });
+}
+
+/* ---------------- license ---------------- */
+function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function lsRemove(k){ try{ localStorage.removeItem(k); }catch(e){} }
+function isLicensed(){ return licensed || lsGet("bfr_lic")==="ok"; }
+function activateLicense(){
+  var key=$("licInput").value.trim(), msg=$("licMsg");
+  if(!key){ msg.textContent="Enter your license key (check your Lemon Squeezy email)."; return; }
+  msg.textContent="Activating…";
+  // offline trusted tokens first
+  if(CFG_STORE.UNLOCK_TOKENS.indexOf(key)>-1){ return unlock(key); }
+  if(!CFG_STORE.STORE_API){
+    msg.innerHTML="That key didn't activate. Double-check it and try again, or email support@bfrocket.com — we reply the same day.";
+    return;
+  }
+  fetch(CFG_STORE.STORE_API+"/api/license/activate",{method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({license_key:key,instance_name:"bfr-"+Date.now().toString(36)})
+  }).then(function(r){return r.json()})
+  .then(function(j){
+    if(j && (j.activated || j.valid || j.status==="active")){ unlock(key); }
+    else{ msg.textContent="Couldn't validate that key. Check it and try again."; }
+  }).catch(function(){ msg.textContent="Network error — try again."; });
+}
+function unlock(){
+  licensed=true;
+  try{ localStorage.setItem("bfr_lic","ok"); }catch(e){}
+  $("licBadge").textContent="PRO unlocked ⚡"; $("licBadge").className="badge pro";
+  $("proNote").innerHTML='<span>✅ PRO active — watermark removed, all themes unlocked. Have fun shipping.</span>';
+  closeModals(); buildThemeGrid(); render(); toast("PRO unlocked ⚡");
+}
+function goBuy(){
+  track("buy_click");
+  if(CFG_STORE.BUY_URL){ window.open(CFG_STORE.BUY_URL,"_blank"); }
+  else{
+    $("licMsg").innerHTML='Checkout isn\'t live yet — this build can\'t charge anyone (the landing page discloses the same). Want PRO the moment it goes live? <a href="mailto:support@bfrocket.com?subject=' + encodeURIComponent("Notify me when BF Rocket PRO is live") + '" style="color:#ff9500">Email us</a> and you\'ll get first access at launch pricing.';
+  }
+}
+
+/* ---------------- misc ---------------- */
+function openOG(){ if(!licensed){ openModal("licModal"); toast("OG banner generator is a PRO feature"); return; } openModal("ogModal"); renderOG(); }
+function openKitGated(){ if(!licensed){ openModal("licModal"); toast("Launch kit is a PRO feature"); return; } openModal("kitModal"); }
+function openModal(id){ if(id==="kitModal") openKit(); if(id==="ogModal") renderOG(); if(id==="licModal"&&!licensed) track("pro_modal_open"); $(id).classList.add("open"); }
+function saveProject(){
+  var blob=new Blob([JSON.stringify(cfg,null,2)],{type:"application/json"});
+  var a=document.createElement("a");
+  var slug=(cfg.name||"project").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "project";
+  a.href=URL.createObjectURL(blob); a.download=slug+"-bfrocket.json"; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000); toast("Project saved — keep the file as your backup");
+}
+function loadProject(inp){
+  var f=inp.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      var j=JSON.parse(r.result);
+      if(!j || typeof j.name!=="string") throw new Error("bad");
+      cfg=Object.assign({},DEFAULTS,j);
+      if(cfg.logo && !/^data:image\//.test(cfg.logo)) cfg.logo="";
+      if(cfg.shot && !/^data:image\//.test(cfg.shot)) cfg.shot="";
+      migrateCfg(cfg); save(); syncForm(); buildChips(); buildThemeGrid(); render();
+      toast("Project loaded ✓");
+    }catch(e){ toast("That's not a valid BF Rocket project file"); }
+    inp.value="";
+  };
+  r.readAsText(f);
+}
+function closeModals(){ document.querySelectorAll(".modalbg").forEach(function(m){m.classList.remove("open")}); }
+function toast(t){ var el=$("toast"); el.textContent=t; el.classList.add("show"); clearTimeout(el._t); el._t=setTimeout(function(){el.classList.remove("show")},2200); }
+
+/* ---------------- measurement (wire to the contest tracker when installed) ---------------- */
+var _events=[];
+function track(name,detail){
+  try{
+    _events.push({t:name,d:detail||"",at:new Date().toISOString()});
+    if(_events.length>200) _events.shift();
+    if(!DEMO){ try{ localStorage.setItem("bfr_events", JSON.stringify(_events.slice(-50))); }catch(e){} }
+    try{ var ul=$("urlLabel"); if(ul){ var base=ul.dataset.base||ul.textContent; ul.textContent=base.replace(/ · saved.*$/,"")+" · saved "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); ul.dataset.base=ul.textContent.split(" · saved")[0]; } }catch(e){}
+    if(window.console&&console.debug) console.debug("[bfr]",name,detail||"");
+    if(window.dataLayer) window.dataLayer.push({event:name,detail:detail||""});
+  }catch(e){}
+}
+function fillDemo(){
+  var hasWork=cfg && cfg.name && cfg.name!=="Your Product" && cfg.name!=="Snapshot" && (cfg.url||cfg.desc!==DEFAULTS.desc);
+  if(!DEMO && hasWork && !confirm("Replace your current work with the demo?\n\nYour project will be backed up first — restore it via 📂 Load project if you change your mind (it's saved as a file in your Downloads folder).")) return;
+  try{ localStorage.setItem("bfr_cfg_before_demo", JSON.stringify(cfg)); }catch(e){}
+  Object.assign(cfg,{
+    name:"Snapshot", tag:"Turn messy meeting notes into decisions your team actually follows.",
+    desc:"Snapshot listens to your meetings and returns a clean summary, owners and deadlines — in your team's Slack, 60 seconds after you hang up.",
+    feats:["Works with Zoom, Meet and in-person audio","Auto-assigns owners and deadlines","Posts to Slack, Notion or email","SOC2-ready, audio never stored"],
+    old:98, new:29, end:"", url:"https://checkout.snapshop.dev/buy/black-friday", cta:"Claim 70% off",
+    ribbon:"BLACK FRIDAY — 70% OFF ENDS SOON",
+    t1:"“We stopped writing follow-up emails entirely. Worth every cent.” — Priya, eng manager",
+    t2:"“The only AI tool my whole team actually uses daily.” — Marc, indie founder"
+  });
+  setEnd("bf"); save(); syncForm(); buildChips(); buildRibbons(); buildThemeGrid(); render(); renderOG();
+  toast("Demo loaded — edit anything");
+}
+function resetAll(){
+  if(!confirm("Reset all fields to defaults?")) return;
+  lsRemove("bfr_cfg");
+  cfg=Object.assign({},DEFAULTS); migrateCfg(cfg);
+  syncForm(); buildChips(); buildThemeGrid(); render(); renderOG();
+}
+function syncForm(){
+  $("f_name").value=cfg.name; $("f_tag").value=cfg.tag; $("f_desc").value=cfg.desc;
+  $("f_feats").value=(cfg.feats||[]).join("\n");
+  $("f_old").value=cfg.old; $("f_new").value=cfg.new;
+  $("f_end").value=cfg.end; $("f_url").value=cfg.url;
+  $("f_cta").value=cfg.cta; $("f_ribbon").value=cfg.ribbon;
+  $("f_t1").value=cfg.t1; $("f_t2").value=cfg.t2;
+  $("f_cur").value=cfg.currency||"$";
+  $("f_lang").value=cfg.lang||"en";
+  $("f_purl").value=cfg.pageUrl||"";
+  $("f_ana").value=cfg.analytics||"";
+  $("f_tz").value=cfg.tz||browserOffsetStr();
+  updateTzHint();
+  if(cfg.shot){ $("shotPrev").src=cfg.shot; $("shotPrev").style.display=""; $("shotRm").style.display=""; }
+  else{ $("shotPrev").style.display="none"; $("shotRm").style.display="none"; }
+  $("f_accent").value=cfg.accent; $("f_guar").checked=cfg.guar;
+  if(cfg.logo){ $("logoPrev").src=cfg.logo; $("logoRm").style.display=""; }
+}
+function boot(){
+  buildTzSelect();
+  fitTop();
+  window.addEventListener("resize", fitTop);
+  // modal backdrop clicks work in every mode
+  document.querySelectorAll(".modalbg").forEach(function(m){
+    m.addEventListener("click",function(e){ if(e.target===m) m.classList.remove("open"); });
+  });
+  // ?demo=1 (landing-page embed): ephemeral demo state, isolated from saved projects.
+  // Must run BEFORE anything calls save() — setEnd() below persists the default
+  // config, which would otherwise make this first-visit check always false.
+  var q0=new URLSearchParams(location.search);
+  if(q0.get("demo")==="1"){
+    DEMO=true; fillDemo(); return;
+  }
+  syncForm(); buildChips(); buildRibbons(); buildThemeGrid();
+  if(!cfg.end) setEnd("bf");
+  if(isLicensed()) unlock();
+  render();
+  // auto-fill license from payment redirect: ?license=KEY, or open checkout: ?buy=1
+  var q=new URLSearchParams(location.search);
+  if(q.get("buy")==="1"){ openModal("licModal"); }
+  if(q.get("license")){ $("licInput").value=q.get("license"); activateLicense(); }
+  else if(q.get("unlock") && CFG_STORE.UNLOCK_TOKENS.indexOf(q.get("unlock"))>-1){ unlock(); }
+}
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape") closeModals();
+  if(e.key==="Tab"){
+    var openModalEl=document.querySelector(".modalbg.open .modal");
+    if(openModalEl){
+      var f=openModalEl.querySelectorAll('button,input,select,textarea,a[href],[tabindex]:not([tabindex="-1"])');
+      var vis=[].filter.call(f,function(x){ return x.offsetParent!==null || x===document.activeElement; });
+      if(!vis.length) return;
+      var first=vis[0], last=vis[vis.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+      else if(!openModalEl.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+    }
+  }
+});
+boot();
+</script>
+</body>
+</html>
