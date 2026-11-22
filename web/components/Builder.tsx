@@ -350,6 +350,10 @@ export default function Builder() {
       <header className="top" ref={(el) => { if (el) { document.documentElement.style.setProperty("--topH", el.offsetHeight + "px"); } }}>
         <div className="logo"><span className="flame">🚀</span> BF Rocket <span style={{ color: "var(--bmuted)", fontWeight: 500, fontSize: 12 }}>deal page builder</span></div>
         <span className={"badge" + (licensed ? " pro" : "")}>{licensed ? "PRO unlocked ⚡" : "FREE — watermark on"}</span>
+        <button className={"badge " + (fills.fails.length ? "failing" : "ready")} onClick={pfOpen}
+          title={fills.fails.length ? fills.fails.length + " pre-flight check(s) failing — click to review" : "All tool checks pass — click to review"}>
+          {fills.fails.length ? "🧪 " + fills.fails.length + " to fix" : "✅ ready to pack"}
+        </button>
         <div className="spacer" />
         <button className="btn ghost" onClick={tryDemo}>Try demo</button>
         <button className="btn" onClick={openOG}>OG banner</button>
@@ -523,7 +527,7 @@ export default function Builder() {
         {/* ============ PREVIEW ============ */}
         <div className="prevcol">
           <div className="prevbar">
-            <div className="url" id="urlLabel">{savedAt ? "preview — " + savedAt : "preview — auto-saved locally"}</div>
+            <div className="url" id="urlLabel"><span className="savedot" style={{ opacity: savedAt ? 1 : 0.25 }} />{savedAt ? "saved " + savedAt.replace("saved ","") + " · " : ""}{slugify(cfg.name, "deal")}.bf-deal</div>
             <button className={"btn devicebtn" + (device === "desktop" ? " active" : "")} aria-label="Desktop preview" aria-pressed={device === "desktop"} onClick={() => setDevice("desktop")}>🖥</button>
             <button className={"btn devicebtn" + (device === "mobile" ? " active" : "")} aria-label="Mobile preview" aria-pressed={device === "mobile"} onClick={() => setDevice("mobile")}>📱</button>
           </div>

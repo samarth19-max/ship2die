@@ -111,7 +111,10 @@ footer.lfoot a{color:var(--muted)}
 }
 .bfapp .logo{font-weight:800; font-size:16px; letter-spacing:-.3px; display:flex; align-items:center; gap:8px;}
 .bfapp .logo .flame{filter:drop-shadow(0 0 6px rgba(255,80,40,.6));}
-.bfapp .badge{font-size:11px; padding:3px 8px; border-radius:99px; border:1px solid var(--bline); color:var(--bmuted); font-weight:600;}
+.bfapp .badge{font-size:11px; padding:3px 8px; border-radius:99px; border:1px solid var(--bline); color:var(--bmuted); font-weight:600; cursor:default;}
+.bfapp .badge.ready{color:var(--bok); border-color:rgba(48,209,88,.4); background:rgba(48,209,88,.08); cursor:pointer;}
+.bfapp .badge.failing{color:#ff6b60; border-color:rgba(255,107,96,.4); background:rgba(255,69,58,.08); cursor:pointer;}
+.bfapp .top{background:linear-gradient(180deg,var(--bpanel),#0e1016);}
 .bfapp .badge.pro{color:var(--bok); border-color:rgba(48,209,88,.4);}
 .bfapp .top .spacer{flex:1;}
 .bfapp .btn{
@@ -127,22 +130,28 @@ footer.lfoot a{color:var(--muted)}
 .bfapp .formcol{overflow-y:auto; padding:16px; border-right:1px solid var(--bline); background:var(--bpanel);}
 .bfapp .prevcol{display:flex; flex-direction:column; background:#05060a;}
 .bfapp .prevbar{display:flex; align-items:center; gap:8px; padding:8px 14px; border-bottom:1px solid var(--bline); background:var(--bpanel);}
-.bfapp .prevbar .url{flex:1; background:#0b0c10; border:1px solid var(--bline); color:var(--bmuted); padding:6px 12px; border-radius:8px; font-size:12px; font-family:ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.bfapp .prevbar .url{flex:1; background:#0b0c10; border:1px solid var(--bline); color:var(--bmuted); padding:6px 12px; border-radius:8px; font-size:12px; font-family:ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:flex; align-items:center; gap:8px;}
+.bfapp .savedot{width:7px; height:7px; border-radius:50%; background:var(--bok); flex:none; box-shadow:0 0 6px rgba(48,209,88,.7);}
+.bfapp .chip:hover{border-color:#3a3f4d; color:var(--btext);}
 .bfapp .devicebtn{padding:6px 10px;}
 .bfapp .devicebtn.active{border-color:var(--accent); color:var(--accent);}
 .bfapp .frame{flex:1; display:flex; justify-content:center; overflow:hidden;}
 .bfapp .frame iframe{border:none; width:100%; height:100%; background:#fff;}
 .bfapp .frame.mobile iframe{max-width:400px; margin:14px 0; border-radius:18px; box-shadow:0 10px 60px rgba(0,0,0,.7);}
-.bfapp .sect{margin-bottom:22px;}
+.bfapp .sect{margin-bottom:14px; background:var(--panel); border:1px solid var(--bline); border-radius:14px; padding:14px 16px 16px;}
 .bfapp .sect h3{font-size:11px; text-transform:uppercase; letter-spacing:1.2px; color:var(--bmuted); margin-bottom:10px; display:flex; align-items:center; gap:8px;}
-.bfapp .sect h3 .n{width:18px; height:18px; border-radius:50%; background:var(--bpanel2); border:1px solid var(--bline); display:inline-flex; align-items:center; justify-content:center; font-size:10px; color:var(--btext);}
+.bfapp .sect h3 .n{width:20px; height:20px; border-radius:7px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:800;}
 .bfapp .row{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
 .bfapp label{display:block; font-size:12px; color:var(--bmuted); margin:10px 0 4px; font-weight:600;}
 .bfapp label .req{color:var(--accent);}
 .bfapp input[type=text],.bfapp input[type=url],.bfapp input[type=number],.bfapp input[type=datetime-local],.bfapp textarea,.bfapp select{
   width:100%; background:#0b0c10; border:1px solid var(--bline); color:var(--btext);
   padding:9px 11px; border-radius:8px; font-size:13px; font-family:inherit; outline:none;
+  transition:border-color .15s ease, box-shadow .15s ease;
 }
+.bfapp input:hover,.bfapp textarea:hover,.bfapp select:hover{border-color:#3a3f4d;}
+.bfapp .modalbg{-webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);}
+.bfapp .modal{box-shadow:0 30px 80px rgba(0,0,0,.55);}
 .bfapp input:focus-visible,.bfapp textarea:focus-visible,.bfapp select:focus-visible{outline:2px solid var(--accent2); outline-offset:1px;}
 .bfapp textarea{resize:vertical; min-height:60px;}
 .bfapp .hint{font-size:11px; color:#6b7280; margin-top:4px;}
