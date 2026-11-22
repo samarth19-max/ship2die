@@ -12,3 +12,6 @@ distribution/
 Thumbs.db
 node_modules/
 __pycache__/
+.next/
+*.tsbuildinfo
+.data/
